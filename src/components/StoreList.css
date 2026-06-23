@@ -40,6 +40,21 @@
   font-size: 0.95rem;
   margin-bottom: 0.25rem;
   color: #333;
+  font-weight: bold;
+}
+
+.store-item .site-group {
+  font-size: 0.8rem;
+  color: #667eea;
+  margin: 0.25rem 0;
+  font-weight: 500;
+}
+
+.store-item .segmento {
+  font-size: 0.8rem;
+  color: #764ba2;
+  margin: 0.25rem 0;
+  font-weight: 500;
 }
 
 .store-item .address {

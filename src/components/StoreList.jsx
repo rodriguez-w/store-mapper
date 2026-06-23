@@ -29,7 +29,9 @@ export default function StoreList({ stores, loading, error }) {
           {stores.map(store => (
             <li key={store.id} className="store-item">
               <h3>{store.name}</h3>
-              <p className="address">{store.address}</p>
+              {store.site_group && <p className="site-group">📍 {store.site_group}</p>}
+              {store.segmento && <p className="segmento">🏷️ {store.segmento}</p>}
+              {store.address && <p className="address">{store.address}</p>}
               {store.phone && <p className="phone">📞 {store.phone}</p>}
             </li>
           ))}

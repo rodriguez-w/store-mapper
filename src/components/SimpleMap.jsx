@@ -122,7 +122,15 @@ export default function SimpleMap({ center, zoom, stores, userLocation, radius, 
           }
         )
           .addTo(map.current)
-          .bindPopup(`<strong>${store.name}</strong><p>${store.address}</p>`);
+          .bindPopup(`
+            <div style="font-family: Arial, sans-serif; min-width: 200px;">
+              <strong style="font-size: 16px; color: #333;">${store.name}</strong>
+              ${store.site_group ? `<p style="margin: 5px 0; color: #667eea; font-size: 13px;"><strong>📍 Group:</strong> ${store.site_group}</p>` : ''}
+              ${store.segmento ? `<p style="margin: 5px 0; color: #764ba2; font-size: 13px;"><strong>🏷️ Segment:</strong> ${store.segmento}</p>` : ''}
+              ${store.address ? `<p style="margin: 5px 0; color: #666; font-size: 13px;"><strong>Address:</strong> ${store.address}</p>` : ''}
+              ${store.phone ? `<p style="margin: 5px 0; color: #667eea; font-size: 13px;"><strong>📞 Phone:</strong> ${store.phone}</p>` : ''}
+            </div>
+          `);
 
         markersRef.current.push(storeMarker);
       });
