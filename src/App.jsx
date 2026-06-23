@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import L from 'leaflet';
 import { createClient } from '@supabase/supabase-js';
 import LocationFinder from './components/LocationFinder';
 import StoreList from './components/StoreList';
 import RadiusControl from './components/RadiusControl';
 import SimpleMap from './components/SimpleMap';
+import AdminPanel from './components/AdminPanel';
 import './App.css';
 
 // Initialize Supabase client (you'll fill in these credentials later)
@@ -12,7 +14,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-function App() {
+function Consumer() {
   // Default map center (Panama City)
   const DEFAULT_CENTER = { latitude: 8.9824, longitude: -79.5199 };
   
@@ -139,6 +141,17 @@ function App() {
         </main>
       </div>
     </div>
+  );
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Consumer />} />
+        <Route path="/admin" element={<AdminPanel />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
