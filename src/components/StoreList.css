@@ -1,0 +1,91 @@
+.store-list {
+  background: #f9f9f9;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #eee;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.store-list h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.store-count {
+  font-size: 0.85rem;
+  color: #999;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.stores {
+  list-style: none;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.store-item {
+  background: white;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+  border-left: 4px solid #667eea;
+}
+
+.store-item h3 {
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+  color: #333;
+}
+
+.store-item .address {
+  font-size: 0.8rem;
+  color: #666;
+  margin: 0.25rem 0;
+  line-height: 1.3;
+}
+
+.store-item .phone {
+  font-size: 0.8rem;
+  color: #667eea;
+  margin-top: 0.25rem;
+}
+
+.loading,
+.error,
+.no-stores {
+  text-align: center;
+  padding: 1.5rem 0;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.error {
+  color: #c33;
+  background: #fee;
+  padding: 0.75rem;
+  border-radius: 4px;
+}
+
+/* Scrollbar styling */
+.stores::-webkit-scrollbar {
+  width: 6px;
+}
+
+.stores::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.stores::-webkit-scrollbar-thumb {
+  background: #667eea;
+  border-radius: 3px;
+}
+
+.stores::-webkit-scrollbar-thumb:hover {
+  background: #764ba2;
+}
