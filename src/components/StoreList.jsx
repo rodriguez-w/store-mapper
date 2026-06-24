@@ -21,6 +21,8 @@ export default function StoreList({ stores, loading, error }) {
 
   // Update local stores when props change
   React.useEffect(() => {
+    console.log('StoreList received stores:', stores);
+    stores.forEach(store => console.log(`Store: ${store.name}, Status: ${store.status}`));
     setLocalStores(stores);
   }, [stores]);
 
