@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import { createClient } from '@supabase/supabase-js';
 import LocationFinder from './components/LocationFinder';
@@ -7,6 +7,9 @@ import StoreList from './components/StoreList';
 import RadiusControl from './components/RadiusControl';
 import SimpleMap from './components/SimpleMap';
 import AdminPanel from './components/AdminPanel';
+import ConsumerLogin from './components/ConsumerLogin';
+import AdminLogin from './components/AdminLogin';
+import { getSession, isLoggedIn, destroySession } from './services/authService';
 import './App.css';
 
 // Initialize Supabase client (you'll fill in these credentials later)
@@ -148,6 +151,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/login" element={<ConsumerLogin onLoginSuccess={() => window.location.href = '/'} />} />
+        <Route path="/admin/login" element={<AdminLogin onLoginSuccess={() => window.location.href = '/admin'} />} />
         <Route path="/" element={<Consumer />} />
         <Route path="/admin" element={<AdminPanel />} />
       </Routes>

@@ -9,7 +9,6 @@ const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123';
 
 function AdminPanel() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [password, setPassword] = useState('');
   const [activeTab, setActiveTab] = useState('import'); // 'import' or 'manage'
   const [pastedData, setPastedData] = useState('');
   const [parsedData, setParsedData] = useState([]);
@@ -20,27 +19,28 @@ function AdminPanel() {
   const [messageType, setMessageType] = useState(''); // 'success' or 'error'
 
   useEffect(() => {
+    // Check if admin session exists (from TOTP login)
+    const session = sessionStorage.getItem('store_mapper_session');
+    if (session) {
+      try {
+        const sessionData = JSON.parse(session);
+        if (sessionData.isAdmin) {
+          setIsLoggedIn(true);
+        }
+      } catch (e) {
+        console.error('Error parsing session:', e);
+      }
+    }
+    
     if (isLoggedIn && activeTab === 'manage') {
       fetchStores();
     }
   }, [isLoggedIn, activeTab]);
 
-  // Handle login
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setIsLoggedIn(true);
-      setPassword('');
-      setMessage('');
-    } else {
-      setMessage('Invalid password');
-      setMessageType('error');
-    }
-  };
-
   // Handle logout
   const handleLogout = () => {
     setIsLoggedIn(false);
+    sessionStorage.removeItem('store_mapper_session');
     setPastedData('');
     setParsedData([]);
     setPreviewRows([]);
@@ -154,18 +154,11 @@ function AdminPanel() {
     return (
       <div className="admin-login">
         <div className="login-box">
-          <h1>🔐 Admin Login</h1>
-          <form onSubmit={handleLogin}>
-            <input
-              type="password"
-              placeholder="Enter admin password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              autoFocus
-            />
-            <button type="submit">Login</button>
-          </form>
-          {message && <p className={`message ${messageType}`}>{message}</p>}
+          <h1>🔐 Admin Access</h1>
+          <p>Please log in using the admin login page.</p>
+          <a href="/admin/login" style={{ textDecoration: 'none' }}>
+            <button style={{ width: '100%', padding: '10px' }}>Go to Login</button>
+          </a>
         </div>
       </div>
     );

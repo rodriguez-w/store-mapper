@@ -100,6 +100,10 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.admin-header .header-title {
+  flex: 1;
+}
+
 .admin-header h1 {
   margin: 0;
 }
@@ -150,7 +154,8 @@
 }
 
 .import-section,
-.manage-section {
+.manage-section,
+.audit-section {
   max-width: 1000px;
   margin: 30px auto;
   background: white;
@@ -160,13 +165,164 @@
 }
 
 .import-section h2,
-.manage-section h2 {
+.manage-section h2,
+.audit-section h2 {
   color: #333;
   margin-top: 0;
 }
 
 .import-section p {
   color: #666;
+}
+
+.audit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.audit-header h2 {
+  margin: 0;
+}
+
+.download-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.download-btn:hover {
+  background: #0056b3;
+}
+
+.audit-table {
+  overflow-x: auto;
+}
+
+.audit-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.audit-table table thead {
+  background: #667eea;
+  color: white;
+}
+
+.audit-table table th,
+.audit-table table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.audit-table table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+/* Employee Management */
+.employees-table {
+  overflow-x: auto;
+}
+
+.employees-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.employees-table table thead {
+  background: #667eea;
+  color: white;
+}
+
+.employees-table table th,
+.employees-table table td {
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.employees-table table tbody tr:hover {
+  background: #f9f9f9;
+}
+
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-badge.active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.inactive {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.employee-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.status-select {
+  padding: 5px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.status-select:focus {
+  outline: none;
+  border-color: #667eea;
+  background-color: #f9f9f9;
+}
+
+.employee-importer {
+  background: white;
+  padding: 20px;
+  border-radius: 5px;
+}
+
+.employee-importer h2 {
+  color: #333;
+  margin-top: 0;
+}
+
+.employee-importer p {
+  color: #666;
+  margin: 5px 0;
+}
+
+.format-hint {
+  font-size: 12px;
+  font-family: monospace;
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 3px;
+  border-left: 3px solid #667eea;
 }
 
 textarea {
@@ -304,32 +460,69 @@ textarea:focus {
   .admin-header {
     flex-direction: column;
     gap: 15px;
+    align-items: flex-start;
   }
 
   .logout-btn {
     width: 100%;
+    align-self: stretch;
+  }
+
+  .audit-header {
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start;
+  }
+
+  .download-btn {
+    width: 100%;
   }
 
   .import-section,
-  .manage-section {
+  .manage-section,
+  .audit-section {
     margin: 15px;
     padding: 15px;
   }
 
   .preview table,
-  .stores-table table {
+  .stores-table table,
+  .audit-table table,
+  .employees-table table {
     font-size: 12px;
   }
 
   .preview table th,
   .preview table td,
   .stores-table table th,
-  .stores-table table td {
+  .stores-table table td,
+  .audit-table table th,
+  .audit-table table td,
+  .employees-table table th,
+  .employees-table table td {
     padding: 8px;
+  }
+
+  .employee-actions {
+    flex-direction: column;
+  }
+
+  .employee-actions select,
+  .employee-actions button {
+    width: 100%;
   }
 
   .admin-tabs .tab {
     padding: 12px;
     font-size: 14px;
   }
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  font-size: 18px;
+  color: #666;
 }
