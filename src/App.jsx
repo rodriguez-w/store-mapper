@@ -130,7 +130,7 @@ function Consumer() {
           {userLocation && (
             <RadiusControl radius={radius} onRadiusChange={setRadius} />
           )}
-          <StoreList stores={filteredStores} loading={loading} error={error} />
+          <StoreList stores={filteredStores} loading={loading} error={error} onStoresUpdate={fetchStores} />
         </aside>
 
         <main className="map-container">

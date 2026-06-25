@@ -102,57 +102,87 @@
   min-width: 60px;
 }
 
-/* iOS-style Toggle Switch */
-.ios-toggle {
-  width: 70px;
+/* Segmented Toggle Switch - Like the image */
+.toggle-switch {
+  display: flex;
+  width: 120px;
   height: 50px;
-  border: 3px solid #ddd;
-  border-radius: 12px;
-  background: white;
+  border: 3px solid #999;
+  border-radius: 10px;
+  background: #f0f0f0;
   cursor: pointer;
   position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
   padding: 0;
-  flex-shrink: 0;
+  gap: 0;
+  overflow: hidden;
+  transition: all 0.3s ease;
 }
 
-.ios-toggle.open {
-  border-color: #4caf50;
-  background: #c8e6c9;
-}
-
-.ios-toggle.closed {
-  border-color: #f44336;
-  background: #ffcdd2;
-}
-
-.ios-toggle:hover:not(:disabled) {
-  transform: scale(1.08);
+.toggle-switch:hover:not(:disabled) {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.ios-toggle:disabled {
+.toggle-switch:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.toggle-symbol {
+.toggle-switch.open {
+  border-color: #66bb6a;
+}
+
+.toggle-switch.closed {
+  border-color: #ef5350;
+}
+
+/* Individual toggle parts */
+.toggle-part {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.5rem;
   font-weight: bold;
-  color: white;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  background: white;
+  color: #999;
   transition: all 0.3s ease;
+  border-right: 2px solid #ddd;
 }
 
-.ios-toggle.open .toggle-symbol {
-  color: #2e7d32;
+.toggle-part:last-child {
+  border-right: none;
 }
 
-.ios-toggle.closed .toggle-symbol {
-  color: #c62828;
+/* Open part (checkmark) */
+.open-part {
+  color: #66bb6a;
+}
+
+.toggle-switch.open .open-part.active {
+  background: #66bb6a;
+  color: white;
+  flex: 1.2;
+}
+
+.toggle-switch.closed .open-part {
+  background: white;
+  color: #bbb;
+}
+
+/* Closed part (X) */
+.closed-part {
+  color: #ef5350;
+}
+
+.toggle-switch.closed .closed-part.active {
+  background: #ef5350;
+  color: white;
+  flex: 1.2;
+}
+
+.toggle-switch.open .closed-part {
+  background: white;
+  color: #bbb;
 }
 
 .loading,
@@ -210,6 +240,15 @@
   .status-label {
     text-align: left;
   }
+
+  .toggle-switch {
+    width: 110px;
+    height: 45px;
+  }
+
+  .toggle-part {
+    font-size: 1.3rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -217,17 +256,32 @@
     padding: 0.75rem;
   }
 
-  .ios-toggle {
-    width: 60px;
-    height: 45px;
+  .store-content {
+    flex-direction: column;
+    gap: 0.5rem;
   }
 
-  .toggle-symbol {
-    font-size: 1.2rem;
+  .store-toggle-section {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #f0f0f0;
   }
 
   .status-label {
     font-size: 0.7rem;
     min-width: auto;
+  }
+
+  .toggle-switch {
+    width: 100px;
+    height: 40px;
+  }
+
+  .toggle-part {
+    font-size: 1.1rem;
   }
 }

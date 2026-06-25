@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import './StoreList.css';
 
@@ -16,10 +16,38 @@ const supabase = createClient(supabaseUrl, supabaseKey);
  * 4. Shows count of nearby stores
  * 5. Displays store status toggle (OPEN/CLOSED)
  * 6. Updates store status in database
+ * 7. Subscribes to real-time database changes
  */
-export default function StoreList({ stores, loading, error }) {
+export default function StoreList({ stores, loading, error, onStoresUpdate }) {
   const [updatingStoreId, setUpdatingStoreId] = useState(null);
   const [statusError, setStatusError] = useState('');
+  const [localStores, setLocalStores] = useState(stores);
+
+  // Update local stores when parent stores change
+  useEffect(() => {
+    setLocalStores(stores);
+  }, [stores]);
+
+  // Subscribe to real-time changes from database
+  useEffect(() => {
+    const subscription = supabase
+      .from('stores')
+      .on('*', (payload) => {
+        if (payload.eventType === 'UPDATE') {
+          // Update the specific store in local state
+          setLocalStores(prevStores =>
+            prevStores.map(store =>
+              store.id === payload.new.id ? payload.new : store
+            )
+          );
+        }
+      })
+      .subscribe();
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   const handleStatusToggle = async (store) => {
     setUpdatingStoreId(store.id);
@@ -36,8 +64,11 @@ export default function StoreList({ stores, loading, error }) {
 
       if (updateError) throw updateError;
 
-      // Update local state by refreshing the stores
-      // This will be handled by the parent component through re-render
+      // Trigger parent component to refresh stores if callback provided
+      if (onStoresUpdate) {
+        onStoresUpdate();
+      }
+
       console.log(`Store ${store.id} status updated to ${newStatus}`);
     } catch (err) {
       setStatusError(err.message || 'Error updating store status');
@@ -52,18 +83,18 @@ export default function StoreList({ stores, loading, error }) {
       <h2>🏪 Nearby Stores</h2>
       
       <div className="store-count">
-        <span>{stores.length} store(s) found</span>
+        <span>{localStores.length} store(s) found</span>
       </div>
 
       {statusError && <p className="error">{statusError}</p>}
       {loading && <p className="loading">Loading stores...</p>}
       {error && <p className="error">{error}</p>}
 
-      {stores.length === 0 && !loading ? (
+      {localStores.length === 0 && !loading ? (
         <p className="no-stores">No stores nearby</p>
       ) : (
         <ul className="stores">
-          {stores.map(store => (
+          {localStores.map(store => (
             <li key={store.id} className="store-item">
               <div className="store-content">
                 <div className="store-info">
@@ -76,18 +107,20 @@ export default function StoreList({ stores, loading, error }) {
 
                 <div className="store-toggle-section">
                   <div className="status-label">
-                    {updatingStoreId === store.id ? '⏳' : (store.status === 'open' ? '🟢 OPEN' : '🔴 CLOSED')}
+                    {store.status === 'open' ? 'OPEN' : 'CLOSED'}
                   </div>
                   <button
-                    className={`ios-toggle ${store.status === 'open' ? 'open' : 'closed'}`}
+                    className={`toggle-switch ${store.status === 'open' ? 'open' : 'closed'}`}
                     onClick={() => handleStatusToggle(store)}
                     disabled={updatingStoreId === store.id}
                     title={`Click to mark as ${store.status === 'open' ? 'closed' : 'open'}`}
                     aria-label={`Toggle store status: ${store.status}`}
                   >
-                    <span className="toggle-circle"></span>
-                    <span className="toggle-symbol">
-                      {store.status === 'open' ? '✓' : '✕'}
+                    <span className={`toggle-part open-part ${store.status === 'open' ? 'active' : ''}`}>
+                      ✓
+                    </span>
+                    <span className={`toggle-part closed-part ${store.status === 'closed' ? 'active' : ''}`}>
+                      ✕
                     </span>
                   </button>
                 </div>
