@@ -147,14 +147,68 @@ function Consumer() {
   );
 }
 
+function ProtectedRoute({ element, requiredType }) {
+  const [authState, setAuthState] = useState({ loading: true, isLoggedIn: false, isAdmin: false });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = () => {
+      try {
+        const session = getSession();
+        const isAdmin = session?.isAdmin || false;
+        
+        // Check if logged in
+        if (!session || !isLoggedIn()) {
+          setAuthState({ loading: false, isLoggedIn: false, isAdmin: false });
+          return;
+        }
+
+        // Check if has required access
+        if (requiredType === 'admin' && !isAdmin) {
+          setAuthState({ loading: false, isLoggedIn: true, isAdmin: false });
+          return;
+        }
+
+        setAuthState({ loading: false, isLoggedIn: true, isAdmin });
+      } catch (err) {
+        console.error('Auth check error:', err);
+        setAuthState({ loading: false, isLoggedIn: false, isAdmin: false });
+      }
+    };
+
+    checkAuth();
+  }, []);
+
+  if (authState.loading) {
+    return <div className="loading-screen">Loading...</div>;
+  }
+
+  if (!authState.isLoggedIn) {
+    // Redirect to appropriate login page
+    if (requiredType === 'admin') {
+      navigate('/admin/login', { replace: true });
+    } else {
+      navigate('/login', { replace: true });
+    }
+    return null;
+  }
+
+  if (requiredType === 'admin' && !authState.isAdmin) {
+    navigate('/login', { replace: true });
+    return null;
+  }
+
+  return element;
+}
+
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<ConsumerLogin onLoginSuccess={() => window.location.href = '/'} />} />
         <Route path="/admin/login" element={<AdminLogin onLoginSuccess={() => window.location.href = '/admin'} />} />
-        <Route path="/" element={<Consumer />} />
-        <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/" element={<ProtectedRoute element={<Consumer />} requiredType="consumer" />} />
+        <Route path="/admin" element={<ProtectedRoute element={<AdminPanel />} requiredType="admin" />} />
       </Routes>
     </BrowserRouter>
   );
