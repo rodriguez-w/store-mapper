@@ -31,9 +31,15 @@ export default function StoreList({ stores, loading, error, onStoresUpdate }) {
   // Subscribe to real-time changes from database
   useEffect(() => {
     const subscription = supabase
-      .from('stores')
-      .on('*', (payload) => {
-        if (payload.eventType === 'UPDATE') {
+      .channel('stores:updates')
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'stores'
+        },
+        (payload) => {
           // Update the specific store in local state
           setLocalStores(prevStores =>
             prevStores.map(store =>
@@ -41,7 +47,7 @@ export default function StoreList({ stores, loading, error, onStoresUpdate }) {
             )
           );
         }
-      })
+      )
       .subscribe();
 
     return () => {

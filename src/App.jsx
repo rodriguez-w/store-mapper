@@ -155,29 +155,35 @@ function ProtectedRoute({ element, requiredType }) {
     const checkAuth = () => {
       try {
         const session = getSession();
+        const isLoggedInNow = isLoggedIn();
         const isAdmin = session?.isAdmin || false;
         
+        console.log('[ProtectedRoute] Checking auth:', { session: !!session, isLoggedInNow, isAdmin, requiredType });
+        
         // Check if logged in
-        if (!session || !isLoggedIn()) {
+        if (!session || !isLoggedInNow) {
+          console.log('[ProtectedRoute] User not logged in, redirecting');
           setAuthState({ loading: false, isLoggedIn: false, isAdmin: false });
           return;
         }
 
         // Check if has required access
         if (requiredType === 'admin' && !isAdmin) {
+          console.log('[ProtectedRoute] User not admin, redirecting to login');
           setAuthState({ loading: false, isLoggedIn: true, isAdmin: false });
           return;
         }
 
+        console.log('[ProtectedRoute] Auth check passed, rendering element');
         setAuthState({ loading: false, isLoggedIn: true, isAdmin });
       } catch (err) {
-        console.error('Auth check error:', err);
+        console.error('[ProtectedRoute] Auth check error:', err);
         setAuthState({ loading: false, isLoggedIn: false, isAdmin: false });
       }
     };
 
     checkAuth();
-  }, []);
+  }, [requiredType]);
 
   if (authState.loading) {
     return <div className="loading-screen">Loading...</div>;
