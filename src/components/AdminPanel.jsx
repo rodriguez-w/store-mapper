@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import StoreReviewSection from './StoreReviewSection';
 import './AdminPanel.css';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -9,7 +10,7 @@ const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123';
 
 function AdminPanel() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState('import'); // 'import' or 'manage'
+  const [activeTab, setActiveTab] = useState('import'); // 'import', 'manage', or 'review'
   const [pastedData, setPastedData] = useState('');
   const [parsedData, setParsedData] = useState([]);
   const [previewRows, setPreviewRows] = useState([]);
@@ -184,6 +185,12 @@ function AdminPanel() {
         >
           🛠️ Manage Stores
         </button>
+        <button
+          className={`tab ${activeTab === 'review' ? 'active' : ''}`}
+          onClick={() => setActiveTab('review')}
+        >
+          📋 Store Review
+        </button>
       </div>
 
       {message && (
@@ -285,6 +292,12 @@ function AdminPanel() {
               </table>
             </div>
           )}
+        </div>
+      )}
+
+      {activeTab === 'review' && (
+        <div className="review-section">
+          <StoreReviewSection />
         </div>
       )}
     </div>
