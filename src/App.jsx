@@ -9,6 +9,8 @@ import SimpleMap from './components/SimpleMap';
 import AdminPanel from './components/AdminPanel';
 import ConsumerLogin from './components/ConsumerLogin';
 import AdminLogin from './components/AdminLogin';
+import ConsumerMenu from './components/ConsumerMenu';
+import StoreRequestForm from './components/StoreRequestForm';
 import { getSession, isLoggedIn, destroySession } from './services/authService';
 import './App.css';
 
@@ -20,7 +22,9 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 function Consumer() {
   // Default map center (Panama City)
   const DEFAULT_CENTER = { latitude: 8.9824, longitude: -79.5199 };
+  const navigate = useNavigate();
   
+  const [currentPage, setCurrentPage] = useState('map');
   const mapRef = useRef(null);
   const [userLocation, setUserLocation] = useState(null);
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
@@ -116,33 +120,48 @@ function Consumer() {
 
   return (
     <div className="app">
-      <header className="header">
-        <h1>📍 Store Mapper</h1>
-        <p>Find nearby stores</p>
-      </header>
+      <ConsumerMenu 
+        currentPage={currentPage} 
+        onPageChange={setCurrentPage}
+        onLogout={() => {
+          destroySession();
+          navigate('/login');
+        }}
+      />
 
-      <div className="container">
-        <aside className="sidebar">
-          <LocationFinder onLocationFound={(loc) => {
-            setUserLocation(loc);
-            setMapCenter(loc);
-          }} />
-          {userLocation && (
-            <RadiusControl radius={radius} onRadiusChange={setRadius} />
-          )}
-          <StoreList stores={filteredStores} loading={loading} error={error} onStoresUpdate={fetchStores} />
-        </aside>
+      {currentPage === 'map' ? (
+        <>
+          <header className="header">
+            <h1>📍 Store Mapper</h1>
+            <p>Find nearby stores</p>
+          </header>
 
-        <main className="map-container">
-          <SimpleMap
-            center={mapCenter}
-            zoom={userLocation ? 15 : 12}
-            stores={userLocation ? filteredStores : stores}
-            userLocation={userLocation}
-            radius={radius}
-          />
-        </main>
-      </div>
+          <div className="container">
+            <aside className="sidebar">
+              <LocationFinder onLocationFound={(loc) => {
+                setUserLocation(loc);
+                setMapCenter(loc);
+              }} />
+              {userLocation && (
+                <RadiusControl radius={radius} onRadiusChange={setRadius} />
+              )}
+              <StoreList stores={filteredStores} loading={loading} error={error} onStoresUpdate={fetchStores} />
+            </aside>
+
+            <main className="map-container">
+              <SimpleMap
+                center={mapCenter}
+                zoom={userLocation ? 15 : 12}
+                stores={userLocation ? filteredStores : stores}
+                userLocation={userLocation}
+                radius={radius}
+              />
+            </main>
+          </div>
+        </>
+      ) : (
+        <StoreRequestForm />
+      )}
     </div>
   );
 }
