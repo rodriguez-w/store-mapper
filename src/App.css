@@ -36,9 +36,9 @@ html[data-theme='dark'] {
   --color-background: #0A0E27;
   --color-background-secondary: #13182F;
   --color-background-tertiary: #1B223F;
-  --color-text: #F0F4FF;
-  --color-text-secondary: #D0D8F0;
-  --color-text-muted: #8B95B8;
+  --color-text: #FFFFFF;
+  --color-text-secondary: #E8EFFF;
+  --color-text-muted: #B8C5E0;
   --color-text-inverse: #0A0E27;
   --color-success: #34D399;
   --color-warning: #FBBF24;

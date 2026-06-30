@@ -57,10 +57,10 @@ export const darkTheme = {
     backgroundSecondary: '#13182F',
     backgroundTertiary: '#1B223F',
     
-    // Text - LIGHT for dark background
-    text: '#F0F4FF',
-    textSecondary: '#D0D8F0',
-    textMuted: '#8B95B8',
+    // Text - ULTRA LIGHT for dark background
+    text: '#FFFFFF',
+    textSecondary: '#E8EFFF',
+    textMuted: '#B8C5E0',
     textInverse: '#0A0E27',
     
     // Status colors
