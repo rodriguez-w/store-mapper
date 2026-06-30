@@ -17,6 +17,8 @@ export default function StoreCategoryManager() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [editingId, setEditingId] = useState(null);
+  const [bulkData, setBulkData] = useState('');
+  const [showBulkAdd, setShowBulkAdd] = useState(false);
 
   // Fetch categories on mount
   useEffect(() => {
@@ -133,9 +135,166 @@ export default function StoreCategoryManager() {
     setEditingId(null);
   };
 
+  // Handle bulk add paste data
+  const handleBulkPaste = (e) => {
+    setBulkData(e.target.value);
+  };
+
+  // Handle CSV upload
+  const handleCSVUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const csv = event.target.result;
+      setBulkData(csv);
+    };
+    reader.readAsText(file);
+  };
+
+  // Process and add bulk categories
+  const handleBulkAdd = async () => {
+    if (!bulkData.trim()) {
+      setError('No data to add');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      // Parse bulk data - one category per line (name | description)
+      const lines = bulkData.split('\n').filter(line => line.trim());
+      const newCategories = lines.map(line => {
+        const parts = line.split('|').map(p => p.trim());
+        return {
+          id: `cat_${Date.now()}_${Math.random().toString(36).substring(7)}`,
+          name: parts[0] || '',
+          description: parts[1] || '',
+        };
+      }).filter(cat => cat.name); // Only include if name is not empty
+
+      if (newCategories.length === 0) {
+        throw new Error('No valid categories found. Format: Category Name | Description');
+      }
+
+      // Insert categories
+      const { error: insertError } = await supabase
+        .from('store_categories')
+        .insert(newCategories);
+
+      if (insertError) throw insertError;
+
+      setSuccess(`✅ Successfully added ${newCategories.length} categories!`);
+      setBulkData('');
+      setShowBulkAdd(false);
+      await fetchCategories();
+      setTimeout(() => setSuccess(''), 3000);
+    } catch (err) {
+      setError(err.message || 'Error adding categories');
+      console.error('Error:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Download categories as CSV
+  const handleDownloadCSV = () => {
+    if (categories.length === 0) {
+      setError('No categories to download');
+      return;
+    }
+
+    // Create CSV content
+    const headers = ['name', 'description'];
+    const csvContent = [
+      headers.join(','),
+      ...categories.map(cat => 
+        `"${cat.name || ''}","${(cat.description || '').replace(/"/g, '""')}"`
+      )
+    ].join('\n');
+
+    // Create blob and download
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `store_categories_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setSuccess('✅ Categories downloaded successfully!');
+    setTimeout(() => setSuccess(''), 3000);
+  };
+
   return (
     <div className="category-manager">
       <h3>📋 Manage Store Categories</h3>
+
+      {/* Download Button */}
+      <div className="category-actions-header">
+        <button 
+          className="btn-download-csv"
+          onClick={handleDownloadCSV}
+          disabled={loading || categories.length === 0}
+        >
+          ⬇️ Download Categories CSV
+        </button>
+      </div>
+
+      {/* Toggle Bulk Add */}
+      <div className="bulk-add-toggle">
+        <button 
+          className="btn-toggle-bulk"
+          onClick={() => setShowBulkAdd(!showBulkAdd)}
+        >
+          {showBulkAdd ? '✕ Cancel Bulk Add' : '➕ Add Multiple Categories'}
+        </button>
+      </div>
+
+      {/* Bulk Add Section */}
+      {showBulkAdd && (
+        <div className="bulk-add-section">
+          <h4>Add Multiple Categories</h4>
+          <p className="format-hint">Format: Category Name | Description (one per line)</p>
+          <textarea
+            value={bulkData}
+            onChange={handleBulkPaste}
+            placeholder="Pharmacy | Medication and health products&#10;Restaurant | Food and beverages&#10;Supermarket | Groceries and essentials"
+            rows="6"
+            disabled={loading}
+          />
+          <div className="bulk-actions">
+            <button
+              className="btn-upload-csv"
+              disabled={loading}
+            >
+              <label htmlFor="csv-upload-cat" style={{ cursor: 'pointer', margin: 0 }}>
+                📁 Or upload CSV
+              </label>
+              <input
+                id="csv-upload-cat"
+                type="file"
+                accept=".csv,.txt"
+                onChange={handleCSVUpload}
+                style={{ display: 'none' }}
+                disabled={loading}
+              />
+            </button>
+            <button
+              className="btn-bulk-add"
+              onClick={handleBulkAdd}
+              disabled={loading || !bulkData.trim()}
+            >
+              {loading ? '⏳ Adding...' : '✓ Add Categories'}
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Form */}
       <form onSubmit={handleSubmit} className="category-form">

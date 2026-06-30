@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
 import StoreReviewSection from './StoreReviewSection';
+import ConsumerManager from './ConsumerManager';
 import './AdminPanel.css';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -10,7 +11,7 @@ const ADMIN_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD || 'admin123';
 
 function AdminPanel() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [activeTab, setActiveTab] = useState('import'); // 'import', 'manage', or 'review'
+  const [activeTab, setActiveTab] = useState('import'); // 'import', 'manage', 'review', 'consumers'
   const [pastedData, setPastedData] = useState('');
   const [parsedData, setParsedData] = useState([]);
   const [previewRows, setPreviewRows] = useState([]);
@@ -153,6 +154,52 @@ function AdminPanel() {
     }
   };
 
+  // Download stores as CSV
+  const handleDownloadStoresCSV = async () => {
+    if (!isLoggedIn) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('stores')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      if (!data || data.length === 0) {
+        setMessage('No stores to download');
+        setMessageType('error');
+        return;
+      }
+
+      // Create CSV content
+      const headers = ['name', 'gscm', 'latitude', 'longitude', 'country', 'segmento', 'account', 'site_group', 'address', 'phone'];
+      const csvContent = [
+        headers.join(','),
+        ...data.map(store =>
+          `"${store.name || ''}","${store.gscm || ''}","${store.latitude || ''}","${store.longitude || ''}","${store.country || ''}","${store.segmento || ''}","${store.account || ''}","${store.site_group || ''}","${(store.address || '').replace(/"/g, '""')}","${store.phone || ''}"`
+        )
+      ].join('\n');
+
+      // Create blob and download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `stores_${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      setMessage(`✅ Downloaded ${data.length} stores!`);
+      setMessageType('success');
+      setTimeout(() => setMessage(''), 3000);
+    } catch (err) {
+      setMessage(`Error downloading stores: ${err.message}`);
+      setMessageType('error');
+    }
+  };
+
   // Delete a store
   const handleDeleteStore = async (id) => {
     if (!confirm('Are you sure?')) return;
@@ -209,6 +256,12 @@ function AdminPanel() {
           onClick={() => setActiveTab('review')}
         >
           📋 Store Review
+        </button>
+        <button
+          className={`tab ${activeTab === 'consumers' ? 'active' : ''}`}
+          onClick={() => setActiveTab('consumers')}
+        >
+          👥 Manage Consumers
         </button>
       </div>
 
@@ -289,7 +342,16 @@ function AdminPanel() {
 
       {activeTab === 'manage' && (
         <div className="manage-section">
-          <h2>Manage Stores ({stores.length})</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+            <h2 style={{ margin: 0 }}>Manage Stores ({stores.length})</h2>
+            <button
+              className="download-btn"
+              onClick={handleDownloadStoresCSV}
+              disabled={stores.length === 0}
+            >
+              ⬇️ Download Stores CSV
+            </button>
+          </div>
           
           {stores.length === 0 ? (
             <p>No stores found. Use the Import tab to add stores.</p>
@@ -332,6 +394,12 @@ function AdminPanel() {
       {activeTab === 'review' && (
         <div className="review-section">
           <StoreReviewSection />
+        </div>
+      )}
+
+      {activeTab === 'consumers' && (
+        <div className="consumers-section">
+          <ConsumerManager />
         </div>
       )}
     </div>
