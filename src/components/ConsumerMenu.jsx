@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import './ConsumerMenu.css';
 import { destroySession } from '../services/authService';
-import { useTheme } from '../context/ThemeContext';
 
 /**
  * ConsumerMenu Component
- * Professional navigation menu with theme toggle and formal styling
+ * Professional navigation menu with fixed sidebar layout
  */
 export default function ConsumerMenu({ currentPage, onPageChange, onLogout }) {
   const [isOpen, setIsOpen] = useState(false);
-  const { theme, toggleTheme } = useTheme();
 
   const handleMenuClick = (page) => {
     onPageChange(page);
@@ -62,9 +60,6 @@ export default function ConsumerMenu({ currentPage, onPageChange, onLogout }) {
         </ul>
 
         <div className="menu-footer">
-          <button className="theme-toggle" onClick={toggleTheme} title={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}>
-            {theme === 'light' ? '◐ Dark Mode' : '◑ Light Mode'}
-          </button>
           <button className="logout-btn" onClick={handleLogout}>
             ↪ Logout
           </button>
