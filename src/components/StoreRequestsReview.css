@@ -243,6 +243,30 @@
   object-fit: cover;
   border-radius: 4px;
   border: 1px solid #ddd;
+  margin-bottom: 0.75rem;
+}
+
+.btn-download {
+  width: 100%;
+  padding: 0.75rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-download:hover:not(:disabled) {
+  background: #5568d3;
+  transform: translateY(-2px);
+}
+
+.btn-download:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .notes-section {

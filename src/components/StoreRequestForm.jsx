@@ -1,5 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import './StoreRequestForm.css';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -10,7 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
  * StoreRequestForm Component
  * Form for consumers to request new stores
  */
-export default function StoreRequestForm() {
+export default function StoreRequestForm({ onNavigate }) {
   const [formData, setFormData] = useState({
     storeName: '',
     storeCategory: '',
@@ -22,14 +24,46 @@ export default function StoreRequestForm() {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
   const [locationLoading, setLocationLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
 
   // Fetch categories on mount
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  // Initialize map when coordinates are available
+  useEffect(() => {
+    if (formData.latitude && formData.longitude && !mapInstanceRef.current) {
+      initializeMap();
+    }
+  }, [formData.latitude, formData.longitude]);
+
+  const initializeMap = () => {
+    if (!mapRef.current) return;
+
+    // Create map
+    const map = L.map(mapRef.current).setView(
+      [formData.latitude, formData.longitude],
+      15
+    );
+
+    // Add tile layer
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    // Add marker
+    L.marker([formData.latitude, formData.longitude])
+      .addTo(map)
+      .bindPopup('Store Location');
+
+    mapInstanceRef.current = map;
+  };
 
   const fetchCategories = async () => {
     try {
@@ -93,7 +127,6 @@ export default function StoreRequestForm() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
-    setSuccess('');
     setLoading(true);
 
     try {
@@ -156,19 +189,8 @@ export default function StoreRequestForm() {
 
       if (insertError) throw insertError;
 
-      // Reset form
-      setFormData({
-        storeName: '',
-        storeCategory: '',
-        latitude: null,
-        longitude: null,
-        image: null,
-      });
-      setImagePreview(null);
-      setSuccess('Store request submitted successfully! Thank you for your contribution.');
-
-      // Clear success message after 5 seconds
-      setTimeout(() => setSuccess(''), 5000);
+      // Show success screen
+      setShowSuccess(true);
     } catch (err) {
       setError(err.message || 'Failed to submit store request');
       console.error('Error submitting request:', err);
@@ -176,6 +198,53 @@ export default function StoreRequestForm() {
       setLoading(false);
     }
   };
+
+  const handleRequestAnother = () => {
+    // Reset form and map
+    setFormData({
+      storeName: '',
+      storeCategory: '',
+      latitude: null,
+      longitude: null,
+      image: null,
+    });
+    setImagePreview(null);
+    setShowSuccess(false);
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.remove();
+      mapInstanceRef.current = null;
+    }
+  };
+
+  const handleBackToMenu = () => {
+    if (onNavigate) {
+      onNavigate('map');
+    }
+  };
+
+  if (showSuccess) {
+    return (
+      <div className="store-request-container">
+        <div className="form-wrapper success-wrapper">
+          <div className="success-screen">
+            <div className="success-icon">✅</div>
+            <div className="success-title">Request Submitted!</div>
+            <div className="success-message">
+              Thank you for helping us discover new stores. Our team will review your submission shortly.
+            </div>
+            <div className="success-actions">
+              <button className="btn-primary" onClick={handleRequestAnother}>
+                📍 Request Another Store
+              </button>
+              <button className="btn-secondary" onClick={handleBackToMenu}>
+                ← Back to Map
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="store-request-container">
@@ -229,9 +298,25 @@ export default function StoreRequestForm() {
               {locationLoading ? '⏳ Getting location...' : '📍 Get My Location'}
             </button>
             {formData.latitude && (
-              <p className="location-display">
-                ✓ Location: {formData.latitude.toFixed(6)}, {formData.longitude.toFixed(6)}
-              </p>
+              <>
+                <p className="location-display">
+                  ✓ Location: {formData.latitude.toFixed(6)}, {formData.longitude.toFixed(6)}
+                </p>
+                <div className="coordinate-preview">
+                  <div className="coordinate-preview-header">📍 Location Preview</div>
+                  <div className="coordinate-preview-map" ref={mapRef}></div>
+                  <div className="coordinate-values">
+                    <div className="coordinate-item">
+                      <label>Latitude</label>
+                      <value>{formData.latitude.toFixed(6)}</value>
+                    </div>
+                    <div className="coordinate-item">
+                      <label>Longitude</label>
+                      <value>{formData.longitude.toFixed(6)}</value>
+                    </div>
+                  </div>
+                </div>
+              </>
             )}
           </div>
 
@@ -266,7 +351,6 @@ export default function StoreRequestForm() {
 
           {/* Error/Success Messages */}
           {error && <div className="message error">{error}</div>}
-          {success && <div className="message success">{success}</div>}
 
           {/* Submit Button */}
           <button

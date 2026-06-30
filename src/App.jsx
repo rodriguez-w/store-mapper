@@ -160,7 +160,7 @@ function Consumer() {
           </div>
         </>
       ) : (
-        <StoreRequestForm />
+        <StoreRequestForm onNavigate={(page) => setCurrentPage(page)} />
       )}
     </div>
   );

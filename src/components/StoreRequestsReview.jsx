@@ -178,6 +178,17 @@ export default function StoreRequestsReview() {
     return new Date(dateString).toLocaleString();
   };
 
+  const handleDownloadImage = (imageUrl, storeName) => {
+   if (!imageUrl) return;
+    
+   const link = document.createElement('a');
+   link.href = imageUrl;
+   link.download = `store_${storeName.replace(/\s+/g, '_')}_${Date.now()}.jpg`;
+   document.body.appendChild(link);
+   link.click();
+   document.body.removeChild(link);
+  };
+
   return (
     <div className="store-requests-review">
       <h3>🔍 Store Requests Review</h3>
@@ -271,7 +282,13 @@ export default function StoreRequestsReview() {
                 <div className="image-section">
                   <label>Store Photo:</label>
                   <img src={selectedRequest.image_url} alt="Store" className="store-image" />
-                </div>
+                 <button
+                   className="btn-download"
+                   onClick={() => handleDownloadImage(selectedRequest.image_url, selectedRequest.store_name)}
+                 >
+                   ⬇️ Download Photo
+                 </button>
+               </div>
               )}
             </div>
 

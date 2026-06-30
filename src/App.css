@@ -38,6 +38,8 @@ html {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+  padding-left: 4rem;
 }
 
 .header h1 {
@@ -142,6 +144,7 @@ html {
   .header {
     flex-direction: column;
     align-items: flex-start;
+    padding-left: 1.5rem;
   }
 
   .btn-logout {
