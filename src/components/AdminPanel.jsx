@@ -48,7 +48,7 @@ function AdminPanel() {
     setMessage('');
   };
 
-  // Parse pasted data (tab-separated)
+  // Parse pasted data (tab-separated or CSV)
   const handlePaste = (e) => {
     const text = e.target.value;
     setPastedData(text);
@@ -59,10 +59,29 @@ function AdminPanel() {
       return;
     }
 
-    // Parse tab-separated values
+    parseStoreData(text);
+  };
+
+  // Handle CSV file upload
+  const handleCSVUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const csv = event.target.result;
+      setPastedData(csv);
+      parseStoreData(csv);
+    };
+    reader.readAsText(file);
+  };
+
+  // Parse store data - supports both tab-separated and CSV formats
+  const parseStoreData = (text) => {
+    // Parse tab-separated or comma-separated values
     const rows = text.split('\n').filter(row => row.trim());
     const parsed = rows.map(row => {
-      const cols = row.split('\t');
+      const cols = row.split('\t').length > 1 ? row.split('\t') : row.split(',');
       return {
         segmento: cols[0]?.trim() || '',
         account: cols[1]?.trim() || '',
@@ -202,15 +221,30 @@ function AdminPanel() {
 
       {activeTab === 'import' && (
         <div className="import-section">
-          <h2>Paste Store Data</h2>
-          <p>Copy from Excel and paste tab-separated rows below:</p>
+          <h2>Paste or Upload Store Data</h2>
+          <p>Copy from Excel and paste tab-separated rows below, or upload a CSV file:</p>
           
-          <textarea
-            value={pastedData}
-            onChange={handlePaste}
-            placeholder="Paste tab-separated data here (SEGMENTO	ACCOUNT	SITE GROUP	MSO NAME	GSCM	LATITUDE	LONGITUDE	COUNTRY)"
-            rows="8"
-          />
+          <div className="input-section">
+            <textarea
+              value={pastedData}
+              onChange={handlePaste}
+              placeholder="Paste tab-separated data here (SEGMENTO	ACCOUNT	SITE GROUP	MSO NAME	GSCM	LATITUDE	LONGITUDE	COUNTRY)"
+              rows="8"
+            />
+
+            <div className="file-upload-section">
+              <label htmlFor="csv-upload-stores" className="csv-label">
+                📁 Or upload CSV file:
+              </label>
+              <input
+                id="csv-upload-stores"
+                type="file"
+                accept=".csv,.txt"
+                onChange={handleCSVUpload}
+                className="csv-input"
+              />
+            </div>
+          </div>
 
           {previewRows.length > 0 && (
             <div className="preview">
