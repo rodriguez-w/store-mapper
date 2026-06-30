@@ -20,7 +20,7 @@ export default function RadiusControl({ radius, onRadiusChange }) {
 
   return (
     <div className="radius-control">
-      <h2>🎯 Search Radius</h2>
+      <h2>Search Radius</h2>
       
       <div className="radius-display">
         <span className="current-value">{radius} m</span>

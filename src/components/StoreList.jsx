@@ -86,7 +86,7 @@ export default function StoreList({ stores, loading, error, onStoresUpdate }) {
 
   return (
     <div className="store-list">
-      <h2>🏪 Nearby Stores</h2>
+      <h2>Nearby Stores</h2>
       
       <div className="store-count">
         <span>{localStores.length} store(s) found</span>
@@ -105,10 +105,10 @@ export default function StoreList({ stores, loading, error, onStoresUpdate }) {
               <div className="store-content">
                 <div className="store-info">
                   <h3>{store.name}</h3>
-                  {store.site_group && <p className="site-group">📍 {store.site_group}</p>}
-                  {store.segmento && <p className="segmento">🏷️ {store.segmento}</p>}
+                  {store.site_group && <p className="site-group">{store.site_group}</p>}
+                  {store.segmento && <p className="segmento">{store.segmento}</p>}
                   {store.address && <p className="address">{store.address}</p>}
-                  {store.phone && <p className="phone">📞 {store.phone}</p>}
+                  {store.phone && <p className="phone">{store.phone}</p>}
                 </div>
 
                 <div className="store-toggle-section">

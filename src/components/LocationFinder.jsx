@@ -42,7 +42,7 @@ export default function LocationFinder({ onLocationFound }) {
 
   return (
     <div className="location-finder">
-      <h2>📍 Location</h2>
+      <h2>Location</h2>
       
       <button
         onClick={handleGetLocation}

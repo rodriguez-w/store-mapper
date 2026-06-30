@@ -1,86 +1,110 @@
 .radius-control {
-  background: #f9f9f9;
-  padding: 1rem;
-  border-radius: 8px;
+  background: var(--color-background-secondary);
+  padding: 1.5rem;
+  border-radius: 12px;
   margin-bottom: 1.5rem;
-  border: 1px solid #eee;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.3s ease;
+}
+
+.radius-control:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-primary);
 }
 
 .radius-control h2 {
   font-size: 1.1rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: var(--color-text);
+  font-weight: 600;
 }
 
 .radius-display {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .current-value {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #667eea;
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   display: inline-block;
+  letter-spacing: -0.5px;
 }
 
 .radius-slider {
   width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: linear-gradient(to right, #667eea, #764ba2);
+  height: 8px;
+  border-radius: 8px;
+  background: linear-gradient(to right, var(--color-primary), var(--color-primary-dark));
   outline: none;
   -webkit-appearance: none;
   appearance: none;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .radius-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #764ba2;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
+  border: 2px solid var(--color-background);
+}
+
+.radius-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
 }
 
 .radius-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: #764ba2;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   cursor: pointer;
-  border: none;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 2px solid var(--color-background);
+  box-shadow: var(--shadow-md);
+  transition: all 0.2s ease;
 }
 
 .presets {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
 .preset-btn {
-  padding: 0.6rem;
-  background: white;
-  border: 2px solid #eee;
-  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  background: var(--color-background);
+  border: 2px solid var(--color-border);
+  border-radius: 8px;
   cursor: pointer;
   font-size: 0.85rem;
   font-weight: 600;
-  transition: all 0.2s;
-  color: #666;
+  transition: all 0.3s ease;
+  color: var(--color-text-secondary);
+  text-transform: capitalize;
 }
 
 .preset-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-background-secondary);
 }
 
 .preset-btn.active {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
   border-color: transparent;
+  box-shadow: var(--shadow-md);
 }

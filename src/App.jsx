@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import L from 'leaflet';
 import { createClient } from '@supabase/supabase-js';
+import { ThemeProvider } from './context/ThemeContext';
 import LocationFinder from './components/LocationFinder';
 import StoreList from './components/StoreList';
 import RadiusControl from './components/RadiusControl';
@@ -228,14 +229,16 @@ function ProtectedRoute({ element, requiredType }) {
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/login" element={<ConsumerLogin onLoginSuccess={() => window.location.href = '/'} />} />
-        <Route path="/admin/login" element={<AdminLogin onLoginSuccess={() => window.location.href = '/admin'} />} />
-        <Route path="/" element={<ProtectedRoute element={<Consumer />} requiredType="consumer" />} />
-        <Route path="/admin" element={<ProtectedRoute element={<AdminPanel />} requiredType="admin" />} />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<ConsumerLogin onLoginSuccess={() => window.location.href = '/'} />} />
+          <Route path="/admin/login" element={<AdminLogin onLoginSuccess={() => window.location.href = '/admin'} />} />
+          <Route path="/" element={<ProtectedRoute element={<Consumer />} requiredType="consumer" />} />
+          <Route path="/admin" element={<ProtectedRoute element={<AdminPanel />} requiredType="admin" />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 
