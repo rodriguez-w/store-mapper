@@ -6,12 +6,10 @@ import { destroySession } from '../services/authService';
  * ConsumerMenu Component
  * Professional navigation menu with fixed sidebar layout
  */
-export default function ConsumerMenu({ currentPage, onPageChange, onLogout }) {
-  const [isOpen, setIsOpen] = useState(false);
-
+export default function ConsumerMenu({ currentPage, onPageChange, isMenuOpen, onMenuToggle, onLogout }) {
   const handleMenuClick = (page) => {
     onPageChange(page);
-    setIsOpen(false);
+    onMenuToggle(false);
   };
 
   const handleLogout = () => {
@@ -21,21 +19,14 @@ export default function ConsumerMenu({ currentPage, onPageChange, onLogout }) {
 
   return (
     <>
-      {/* Hamburger Button - Top Left */}
-      <button className={`menu-toggle ${isOpen ? 'open' : ''}`} onClick={() => setIsOpen(!isOpen)} title="Menu">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-
       {/* Overlay */}
-      {isOpen && <div className="menu-overlay" onClick={() => setIsOpen(false)}></div>}
+      {isMenuOpen && <div className="menu-overlay" onClick={() => onMenuToggle(false)}></div>}
 
       {/* Slide-out Menu Panel */}
-      <nav className={`consumer-menu ${isOpen ? 'open' : ''}`}>
+      <nav className={`consumer-menu ${isMenuOpen ? 'open' : ''}`}>
         <div className="menu-header">
           <h3>Store Mapper</h3>
-          <button className="menu-close" onClick={() => setIsOpen(false)} title="Close">×</button>
+          <button className="menu-close" onClick={() => onMenuToggle(false)} title="Close">×</button>
         </div>
 
         <ul className="menu-items">
@@ -44,7 +35,7 @@ export default function ConsumerMenu({ currentPage, onPageChange, onLogout }) {
               className={`menu-item ${currentPage === 'map' ? 'active' : ''}`}
               onClick={() => handleMenuClick('map')}
             >
-              <span className="menu-icon">◆</span>
+              <span className="menu-icon">📍</span>
               <span>Find Stores</span>
             </button>
           </li>

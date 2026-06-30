@@ -1,7 +1,7 @@
 .store-request-container {
   display: flex;
   flex-direction: column;
-  padding-top: 80px;
+  padding-top: 20px;
   min-height: 100vh;
   background: #FFFFFF;
   padding-bottom: 2rem;
@@ -10,6 +10,7 @@
   color: #091140;
   position: relative;
   z-index: 1;
+  margin-left: 70px;
 }
 
 .form-wrapper {

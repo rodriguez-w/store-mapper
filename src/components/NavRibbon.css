@@ -1,0 +1,180 @@
+.nav-ribbon {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 70px;
+  height: 100vh;
+  background: linear-gradient(135deg, #173BA6 0%, #091140 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  z-index: 1000;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.nav-ribbon.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Menu Button */
+.ribbon-menu-button {
+  width: 70px;
+  height: 70px;
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.ribbon-menu-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.ribbon-menu-button span {
+  width: 20px;
+  height: 2px;
+  background: white;
+  transition: all 0.3s ease;
+  border-radius: 1px;
+  display: block;
+}
+
+.ribbon-menu-button.open span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+
+.ribbon-menu-button.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.ribbon-menu-button.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* Navigation Items Container */
+.ribbon-nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  padding: 0;
+}
+
+.ribbon-nav-items::-webkit-scrollbar {
+  width: 4px;
+}
+
+.ribbon-nav-items::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.ribbon-nav-items::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+}
+
+.ribbon-nav-items::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Individual Ribbon Items */
+.ribbon-item {
+  width: 70px;
+  height: 70px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  padding: 0;
+  border-left: 3px solid transparent;
+}
+
+.ribbon-item svg {
+  width: 24px;
+  height: 24px;
+  stroke: currentColor;
+}
+
+.ribbon-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.ribbon-item.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border-left-color: white;
+}
+
+/* Mobile - ribbon becomes narrower */
+@media (max-width: 768px) {
+  .nav-ribbon {
+    width: 60px;
+  }
+
+  .ribbon-menu-button {
+    width: 60px;
+    height: 60px;
+  }
+
+  .ribbon-item {
+    width: 60px;
+    height: 60px;
+  }
+
+  .ribbon-item svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .ribbon-menu-button span {
+    width: 18px;
+    height: 1.5px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-ribbon {
+    width: 55px;
+  }
+
+  .ribbon-menu-button {
+    width: 55px;
+    height: 55px;
+  }
+
+  .ribbon-item {
+    width: 55px;
+    height: 55px;
+  }
+
+  .ribbon-item svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ribbon-menu-button span {
+    width: 16px;
+    height: 1.5px;
+  }
+}
