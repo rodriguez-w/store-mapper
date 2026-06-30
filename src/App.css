@@ -83,20 +83,20 @@ body {
 
 /* Modern Header */
 .header {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
-  color: var(--color-text-inverse);
+  background: linear-gradient(135deg, #173BA6 0%, #091140 100%);
+  color: white;
   padding: 1.5rem 2rem;
-  box-shadow: var(--shadow-md);
+  padding-left: 70px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: relative;
-  padding-left: 4rem;
   backdrop-filter: blur(10px);
 }
 
 .header h1 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 0.25rem;
   font-weight: 600;
   letter-spacing: -0.5px;
@@ -292,7 +292,7 @@ input:focus, textarea:focus, select:focus {
   .header {
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 1.5rem;
+    padding-left: 70px;
   }
 
   .btn-logout {
@@ -324,7 +324,7 @@ input:focus, textarea:focus, select:focus {
   }
 
   .header {
-    padding: 1rem;
+    padding-left: 70px;
   }
 
   .header h1 {

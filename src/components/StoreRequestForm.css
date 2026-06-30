@@ -1,13 +1,15 @@
 .store-request-container {
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
+  padding-top: 80px;
   min-height: 100vh;
   background: #FFFFFF;
   padding-bottom: 2rem;
   overflow-y: auto;
   overflow-x: hidden;
   color: #091140;
+  position: relative;
+  z-index: 1;
 }
 
 .form-wrapper {
