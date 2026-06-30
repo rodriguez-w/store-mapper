@@ -30,22 +30,22 @@ html[data-theme='light'] {
 
 html[data-theme='dark'] {
   --color-primary: #3E63E8;
-  --color-primary-dark: #080A1D;
-  --color-primary-medium: #1A1F3A;
+  --color-primary-dark: #6B84F5;
+  --color-primary-medium: #5271F0;
   --color-accent: #8FA0E6;
-  --color-background: #030409;
-  --color-background-secondary: #080A1D;
-  --color-background-tertiary: #0F1225;
-  --color-text: #EDEFF7;
-  --color-text-secondary: #A8AEC0;
-  --color-text-muted: #686E7E;
-  --color-text-inverse: #030409;
+  --color-background: #0A0E27;
+  --color-background-secondary: #13182F;
+  --color-background-tertiary: #1B223F;
+  --color-text: #F0F4FF;
+  --color-text-secondary: #D0D8F0;
+  --color-text-muted: #8B95B8;
+  --color-text-inverse: #0A0E27;
   --color-success: #34D399;
   --color-warning: #FBBF24;
   --color-error: #F87171;
   --color-info: #3E63E8;
-  --color-border: #1A1F3A;
-  --color-border-light: #0F1225;
+  --color-border: #1B223F;
+  --color-border-light: #2A3250;
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.6);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.7);
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.8);

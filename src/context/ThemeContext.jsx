@@ -46,22 +46,22 @@ export const darkTheme = {
   colors: {
     // Primary Blues (from your palette)
     primary: '#3E63E8',
-    primaryDark: '#080A1D',
-    primaryMedium: '#1A1F3A',
+    primaryDark: '#6B84F5',
+    primaryMedium: '#5271F0',
     
     // Accent
     accent: '#8FA0E6',
     
     // Backgrounds
-    background: '#030409',
-    backgroundSecondary: '#080A1D',
-    backgroundTertiary: '#0F1225',
+    background: '#0A0E27',
+    backgroundSecondary: '#13182F',
+    backgroundTertiary: '#1B223F',
     
-    // Text
-    text: '#EDEFF7',
-    textSecondary: '#A8AEC0',
-    textMuted: '#686E7E',
-    textInverse: '#030409',
+    // Text - LIGHT for dark background
+    text: '#F0F4FF',
+    textSecondary: '#D0D8F0',
+    textMuted: '#8B95B8',
+    textInverse: '#0A0E27',
     
     // Status colors
     success: '#34D399',
@@ -70,8 +70,8 @@ export const darkTheme = {
     info: '#3E63E8',
     
     // Borders
-    border: '#1A1F3A',
-    borderLight: '#0F1225',
+    border: '#1B223F',
+    borderLight: '#2A3250',
     
     // Shadows
     shadow: '0 2px 8px rgba(0, 0, 0, 0.6)',

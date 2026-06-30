@@ -133,7 +133,7 @@ function Consumer() {
       {currentPage === 'map' ? (
         <>
           <header className="header">
-            <h1>📍 Store Mapper</h1>
+            <h1>Store Mapper</h1>
             <p>Find nearby stores</p>
           </header>
 
