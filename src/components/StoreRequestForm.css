@@ -13,6 +13,18 @@
   margin-left: 70px;
 }
 
+@media (max-width: 768px) {
+  .store-request-container {
+    margin-left: 60px;
+  }
+}
+
+@media (max-width: 480px) {
+  .store-request-container {
+    margin-left: 55px;
+  }
+}
+
 .form-wrapper {
   max-width: 500px;
   margin: 0 auto;

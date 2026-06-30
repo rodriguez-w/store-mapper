@@ -283,6 +283,7 @@ input:focus, textarea:focus, select:focus {
 @media (max-width: 768px) {
   .container {
     flex-direction: column;
+    margin-left: 60px;
   }
 
   .sidebar {
@@ -297,7 +298,8 @@ input:focus, textarea:focus, select:focus {
   .header {
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 70px;
+    padding-left: 2rem;
+    margin-left: 60px;
   }
 
   .btn-logout {
@@ -323,13 +325,18 @@ input:focus, textarea:focus, select:focus {
 }
 
 @media (max-width: 480px) {
-  .sidebar {
-    padding: 1rem;
-    max-height: 35vh;
+  .container {
+    margin-left: 55px;
   }
 
   .header {
-    padding-left: 70px;
+    padding-left: 1rem;
+    margin-left: 55px;
+  }
+
+  .sidebar {
+    padding: 1rem;
+    max-height: 35vh;
   }
 
   .header h1 {
