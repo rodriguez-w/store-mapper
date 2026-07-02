@@ -10,7 +10,6 @@ import SimpleMap from './components/SimpleMap';
 import AdminPanel from './components/AdminPanel';
 import ConsumerLogin from './components/ConsumerLogin';
 import AdminLogin from './components/AdminLogin';
-import NavRibbon from './components/NavRibbon';
 import ConsumerMenu from './components/ConsumerMenu';
 import StoreRequestForm from './components/StoreRequestForm';
 import { getSession, isLoggedIn, destroySession } from './services/authService';
@@ -27,7 +26,6 @@ function Consumer() {
   const navigate = useNavigate();
   
   const [currentPage, setCurrentPage] = useState('map');
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const mapRef = useRef(null);
   const [userLocation, setUserLocation] = useState(null);
   const [mapCenter, setMapCenter] = useState(DEFAULT_CENTER);
@@ -123,20 +121,10 @@ function Consumer() {
 
   return (
     <div className="app">
-      {/* Permanent left navigation ribbon */}
-      <NavRibbon 
-        isMenuOpen={isMenuOpen}
-        onMenuToggle={setIsMenuOpen}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
-
-      {/* Slide-out menu panel */}
+      {/* Simple menu without ribbon */}
       <ConsumerMenu 
         currentPage={currentPage} 
         onPageChange={setCurrentPage}
-        isMenuOpen={isMenuOpen}
-        onMenuToggle={setIsMenuOpen}
         onLogout={() => {
           destroySession();
           navigate('/login');
@@ -145,7 +133,7 @@ function Consumer() {
 
       {currentPage === 'map' ? (
         <>
-          <header className="header header-with-ribbon">
+          <header className="header">
             <h1>Store Mapper</h1>
             <p>Find nearby stores</p>
           </header>

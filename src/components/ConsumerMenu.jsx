@@ -4,12 +4,14 @@ import { destroySession } from '../services/authService';
 
 /**
  * ConsumerMenu Component
- * Professional navigation menu with fixed sidebar layout
+ * Navigation ribbon with expandable menu
  */
-export default function ConsumerMenu({ currentPage, onPageChange, isMenuOpen, onMenuToggle, onLogout }) {
+export default function ConsumerMenu({ currentPage, onPageChange, onLogout }) {
+  const [isOpen, setIsOpen] = useState(false);
+
   const handleMenuClick = (page) => {
     onPageChange(page);
-    onMenuToggle(false);
+    setIsOpen(false);
   };
 
   const handleLogout = () => {
@@ -19,16 +21,22 @@ export default function ConsumerMenu({ currentPage, onPageChange, isMenuOpen, on
 
   return (
     <>
-      {/* Overlay */}
-      {isMenuOpen && <div className="menu-overlay" onClick={() => onMenuToggle(false)}></div>}
+      {/* Navigation Ribbon - Always visible */}
+      <div className="nav-ribbon">
+        {/* Menu Toggle Button inside ribbon */}
+        <button 
+          className={`ribbon-toggle ${isOpen ? 'open' : ''}`} 
+          onClick={() => setIsOpen(!isOpen)} 
+          title="Menu"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
 
-      {/* Slide-out Menu Panel */}
-      <nav className={`consumer-menu ${isMenuOpen ? 'open' : ''}`}>
-        <div className="menu-header">
-          <h3>Store Mapper</h3>
-          <button className="menu-close" onClick={() => onMenuToggle(false)} title="Close">×</button>
-        </div>
-
+      {/* Expandable Menu Panel */}
+      <nav className={`ribbon-menu ${isOpen ? 'open' : ''}`}>
         <ul className="menu-items">
           <li>
             <button
@@ -36,7 +44,7 @@ export default function ConsumerMenu({ currentPage, onPageChange, isMenuOpen, on
               onClick={() => handleMenuClick('map')}
             >
               <span className="menu-icon">📍</span>
-              <span>Find Stores</span>
+              <span className="menu-label">Find Stores</span>
             </button>
           </li>
           <li>
@@ -45,7 +53,7 @@ export default function ConsumerMenu({ currentPage, onPageChange, isMenuOpen, on
               onClick={() => handleMenuClick('request')}
             >
               <span className="menu-icon">⊕</span>
-              <span>Request Store</span>
+              <span className="menu-label">Request Store</span>
             </button>
           </li>
         </ul>
@@ -56,6 +64,9 @@ export default function ConsumerMenu({ currentPage, onPageChange, isMenuOpen, on
           </button>
         </div>
       </nav>
+
+      {/* Overlay - closes menu when clicked */}
+      {isOpen && <div className="menu-overlay" onClick={() => setIsOpen(false)}></div>}
     </>
   );
 }

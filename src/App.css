@@ -80,6 +80,7 @@ body {
   background-color: var(--color-background);
   color: var(--color-text);
   position: relative;
+  margin-left: 70px;
 }
 
 /* Modern Header */
@@ -87,7 +88,6 @@ body {
   background: linear-gradient(135deg, #173BA6 0%, #091140 100%);
   color: white;
   padding: 1.5rem 2rem;
-  padding-left: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
   display: flex;
   justify-content: space-between;
@@ -95,10 +95,6 @@ body {
   position: relative;
   backdrop-filter: blur(10px);
   flex-shrink: 0;
-}
-
-.header.header-with-ribbon {
-  padding-left: 2rem;
 }
 
 .header h1 {
@@ -282,6 +278,11 @@ input:focus, textarea:focus, select:focus {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .app {
+    margin-left: 0;
+    margin-top: 60px;
+  }
+
   .container {
     flex-direction: column;
   }
@@ -325,6 +326,11 @@ input:focus, textarea:focus, select:focus {
 }
 
 @media (max-width: 480px) {
+  .app {
+    margin-left: 0;
+    margin-top: 60px;
+  }
+
   .container {
     flex-direction: column;
   }
