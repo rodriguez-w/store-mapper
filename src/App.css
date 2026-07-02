@@ -75,10 +75,11 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
   background-color: var(--color-background);
   color: var(--color-text);
+  position: relative;
 }
 
 /* Modern Header */
@@ -93,6 +94,8 @@ body {
   align-items: center;
   position: relative;
   backdrop-filter: blur(10px);
+  margin-left: 70px;
+  flex-shrink: 0;
 }
 
 .header.header-with-ribbon {
@@ -300,6 +303,7 @@ input:focus, textarea:focus, select:focus {
     align-items: flex-start;
     padding-left: 2rem;
     margin-left: 60px;
+    flex-shrink: 0;
   }
 
   .btn-logout {
@@ -332,6 +336,7 @@ input:focus, textarea:focus, select:focus {
   .header {
     padding-left: 1rem;
     margin-left: 55px;
+    flex-shrink: 0;
   }
 
   .sidebar {
