@@ -10,21 +10,8 @@
   color: #091140;
   position: relative;
   z-index: 1;
-  margin-left: 70px;
   flex: 1;
   width: 100%;
-}
-
-@media (max-width: 768px) {
-  .store-request-container {
-    margin-left: 60px;
-  }
-}
-
-@media (max-width: 480px) {
-  .store-request-container {
-    margin-left: 55px;
-  }
 }
 
 .form-wrapper {
