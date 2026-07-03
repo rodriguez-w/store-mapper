@@ -1,29 +1,33 @@
 .consumer-manager {
-  background: white;
+  background: linear-gradient(135deg, rgba(23, 59, 166, 0.05) 0%, rgba(9, 17, 64, 0.05) 100%);
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(23, 59, 166, 0.1);
 }
 
 .consumer-manager h3 {
   font-size: 1.2rem;
   margin-bottom: 1.5rem;
-  color: #333;
+  color: #173BA6;
   padding-bottom: 1rem;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #173BA6;
+  font-weight: 700;
 }
 
 .consumer-manager h4 {
   font-size: 1rem;
   margin-bottom: 1rem;
-  color: #333;
+  color: #173BA6;
+  font-weight: 700;
 }
 
 .consumer-manager h5 {
   font-size: 0.95rem;
   margin: 1rem 0 0.5rem 0;
-  color: #333;
+  color: #173BA6;
+  font-weight: 700;
 }
 
 /* Messages */
@@ -66,11 +70,12 @@
 
 /* Form Styles */
 .consumer-form {
-  background: #f9f9f9;
+  background: rgba(23, 59, 166, 0.03);
   padding: 1.5rem;
   border-radius: 6px;
   margin-bottom: 1.5rem;
-  border: 1px solid #eee;
+  border: 1px solid rgba(23, 59, 166, 0.15);
+  backdrop-filter: blur(10px);
 }
 
 .form-group {
@@ -82,7 +87,7 @@
 
 .form-group label {
   font-weight: 600;
-  color: #333;
+  color: #173BA6;
   font-size: 0.95rem;
 }
 
@@ -90,12 +95,21 @@
 .form-group textarea,
 .form-group select {
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 2px solid rgba(23, 59, 166, 0.2);
   border-radius: 4px;
   font-family: inherit;
   font-size: 0.95rem;
   transition: all 0.3s;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: #173BA6;
   background: white;
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 .form-group input:focus,
@@ -120,15 +134,15 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s;
-  background: #4caf50;
+  background: #173BA6;
   color: white;
   flex: 1;
 }
 
 .btn-save:hover:not(:disabled) {
-  background: #45a049;
+  background: #122a7d;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 .btn-save:disabled {
@@ -143,7 +157,7 @@
 
 .btn-toggle-bulk {
   padding: 0.75rem 1.5rem;
-  background: #667eea;
+  background: linear-gradient(135deg, #173BA6 0%, #122a7d 100%);
   color: white;
   border: none;
   border-radius: 4px;
@@ -155,51 +169,55 @@
 }
 
 .btn-toggle-bulk:hover {
-  background: #5568d3;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 /* Bulk Add Section */
 .bulk-add-section {
-  background: #f5f7ff;
-  border: 2px solid #667eea;
+  background: rgba(23, 59, 166, 0.05);
+  border: 2px solid #173BA6;
   border-radius: 6px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
+  backdrop-filter: blur(5px);
 }
 
 .bulk-add-section h5 {
   margin-top: 0;
-  color: #333;
+  color: #173BA6;
   margin-bottom: 0.5rem;
+  font-weight: 700;
 }
 
 .bulk-add-section .format-hint {
   font-size: 0.85rem;
-  color: #666;
+  color: #173BA6;
   margin-bottom: 1rem;
-  background: white;
+  background: rgba(23, 59, 166, 0.05);
   padding: 0.75rem;
   border-radius: 4px;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid #173BA6;
+  font-weight: 500;
 }
 
 .bulk-add-section textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 2px solid rgba(23, 59, 166, 0.2);
   border-radius: 4px;
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
   resize: vertical;
   margin-bottom: 1rem;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .bulk-add-section textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #173BA6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 .bulk-add-section textarea:disabled {
@@ -215,7 +233,7 @@
 .btn-bulk-add {
   flex: 1;
   padding: 0.75rem 1.5rem;
-  background: #4caf50;
+  background: linear-gradient(135deg, #173BA6 0%, #122a7d 100%);
   color: white;
   border: none;
   border-radius: 4px;
@@ -226,9 +244,8 @@
 }
 
 .btn-bulk-add:hover:not(:disabled) {
-  background: #45a049;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 .btn-bulk-add:disabled {
@@ -238,7 +255,7 @@
 
 .btn-upload-csv {
   padding: 0.75rem 1.5rem;
-  background: #ff9800;
+  background: #173BA6;
   color: white;
   border: none;
   border-radius: 4px;
@@ -250,22 +267,18 @@
 }
 
 .btn-upload-csv:hover:not(:disabled) {
-  background: #e68900;
+  background: #122a7d;
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
-}
-
-.btn-upload-csv:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 /* Add Country Section */
 .add-country-section {
-  background: #f9f9f9;
+  background: rgba(23, 59, 166, 0.05);
   padding: 1.5rem;
   border-radius: 6px;
-  border: 1px solid #eee;
+  border: 1px solid rgba(23, 59, 166, 0.1);
+  backdrop-filter: blur(5px);
 }
 
 .country-input-group {
@@ -277,22 +290,24 @@
 .country-input-group input {
   flex: 1;
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 2px solid rgba(23, 59, 166, 0.2);
   border-radius: 4px;
   font-family: inherit;
   font-size: 0.95rem;
   text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .country-input-group input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #173BA6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 .btn-add-country {
   padding: 0.75rem 1rem;
-  background: #667eea;
+  background: #173BA6;
   color: white;
   border: none;
   border-radius: 4px;
@@ -304,8 +319,9 @@
 }
 
 .btn-add-country:hover:not(:disabled) {
-  background: #5568d3;
+  background: #122a7d;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 .btn-add-country:disabled {
@@ -379,7 +395,7 @@
 
 .btn-copy {
   padding: 0.75rem 1.5rem;
-  background: #667eea;
+  background: #173BA6;
   color: white;
   border: none;
   border-radius: 4px;
@@ -391,13 +407,14 @@
 }
 
 .btn-copy:hover {
-  background: #5568d3;
+  background: #122a7d;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 .link-info {
-  background: #f5f7ff;
-  border-left: 4px solid #667eea;
+  background: rgba(23, 59, 166, 0.05);
+  border-left: 4px solid #173BA6;
   padding: 1rem;
   border-radius: 4px;
   margin-bottom: 1.5rem;
@@ -409,12 +426,13 @@
 
 .link-info strong {
   color: #173BA6;
+  font-weight: 700;
 }
 
 .btn-close-modal {
   width: 100%;
   padding: 0.75rem;
-  background: #4caf50;
+  background: #173BA6;
   color: white;
   border: none;
   border-radius: 4px;
@@ -425,8 +443,9 @@
 }
 
 .btn-close-modal:hover {
-  background: #45a049;
+  background: #122a7d;
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 /* Filter Section */
@@ -435,6 +454,11 @@
   gap: 1rem;
   margin-bottom: 1.5rem;
   flex-wrap: wrap;
+  background: rgba(23, 59, 166, 0.05);
+  padding: 1rem;
+  border-radius: 6px;
+  border: 1px solid rgba(23, 59, 166, 0.1);
+  backdrop-filter: blur(5px);
 }
 
 .filter-group {
@@ -447,31 +471,33 @@
 
 .filter-group label {
   font-weight: 600;
-  color: #333;
+  color: #173BA6;
   font-size: 0.95rem;
 }
 
 .filter-group input,
 .filter-group select {
   padding: 0.75rem;
-  border: 1px solid #ddd;
+  border: 2px solid rgba(23, 59, 166, 0.2);
   border-radius: 4px;
   font-family: inherit;
   font-size: 0.95rem;
+  background: rgba(255, 255, 255, 0.7);
 }
 
 .filter-group input:focus,
 .filter-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #173BA6;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 /* Consumers List */
 .consumers-list {
   flex: 1;
   overflow-y: auto;
-  border: 1px solid #eee;
+  border: 1px solid rgba(23, 59, 166, 0.1);
   border-radius: 6px;
   background: white;
 }
@@ -493,11 +519,12 @@
 }
 
 .consumers-table table thead {
-  background: #667eea;
+  background: linear-gradient(90deg, #173BA6 0%, #122a7d 100%);
   color: white;
   position: sticky;
   top: 0;
   z-index: 10;
+  font-weight: 700;
 }
 
 .consumers-table table th,

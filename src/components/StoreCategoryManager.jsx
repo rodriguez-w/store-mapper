@@ -221,7 +221,8 @@ export default function StoreCategoryManager() {
     const link = document.createElement('a');
     const url = URL.createObjectURL(blob);
     link.setAttribute('href', url);
-    link.setAttribute('download', `store_categories_${new Date().toISOString().split('T')[0]}.csv`);
+    const dateStr = new Date().toISOString().split('T')[0];
+    link.setAttribute('download', `[CATEGORIES]_store_categories_${dateStr}.csv`);
     link.style.visibility = 'hidden';
     document.body.appendChild(link);
     link.click();
@@ -241,9 +242,10 @@ export default function StoreCategoryManager() {
           className="btn-download-csv"
           onClick={handleDownloadCSV}
           disabled={loading || categories.length === 0}
-        >
-          ⬇️ Download Categories CSV
-        </button>
+           title="Downloads: [CATEGORIES]_store_categories_YYYY-MM-DD.csv"
+         >
+           ⬇️ Download Categories CSV
+         </button>
       </div>
 
       {/* Toggle Bulk Add */}

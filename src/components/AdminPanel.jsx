@@ -185,7 +185,8 @@ function AdminPanel() {
       const link = document.createElement('a');
       const url = URL.createObjectURL(blob);
       link.setAttribute('href', url);
-      link.setAttribute('download', `stores_${new Date().toISOString().split('T')[0]}.csv`);
+      const dateStr = new Date().toISOString().split('T')[0];
+      link.setAttribute('download', `[STORES]_stores_${dateStr}.csv`);
       link.style.visibility = 'hidden';
       document.body.appendChild(link);
       link.click();
@@ -348,6 +349,7 @@ function AdminPanel() {
               className="download-btn"
               onClick={handleDownloadStoresCSV}
               disabled={stores.length === 0}
+              title="Downloads: [STORES]_stores_YYYY-MM-DD.csv"
             >
               ⬇️ Download Stores CSV
             </button>
