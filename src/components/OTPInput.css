@@ -1,0 +1,66 @@
+.otp-input-container {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  margin: 1.5rem 0;
+}
+
+.otp-digit-input {
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 600;
+  border: 2px solid #173BA6;
+  border-radius: 8px;
+  background: #FFFFFF;
+  color: #091140;
+  transition: all 0.3s ease;
+  letter-spacing: 2px;
+}
+
+.otp-digit-input:focus {
+  outline: none;
+  border-color: #173BA6;
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
+  background: #F8FAFF;
+}
+
+.otp-digit-input:hover {
+  border-color: #0E2773;
+}
+
+.otp-digit-input::placeholder {
+  color: #DDD;
+  font-size: 1.25rem;
+  opacity: 0.5;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .otp-input-container {
+    gap: 0.6rem;
+    margin: 1.25rem 0;
+  }
+
+  .otp-digit-input {
+    width: 45px;
+    height: 45px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .otp-input-container {
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .otp-digit-input {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+    border-width: 1.5px;
+  }
+}

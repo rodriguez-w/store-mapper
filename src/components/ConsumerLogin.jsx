@@ -13,6 +13,7 @@ import {
   generateBackupCodes
 } from '../services/authService';
 import TOTPSetup from './TOTPSetup';
+import OTPInput from './OTPInput';
 import './Login.css';
 
 export default function ConsumerLogin({ onLoginSuccess }) {
@@ -299,7 +300,6 @@ export default function ConsumerLogin({ onLoginSuccess }) {
                 type="text"
                 value={employeeId}
                 onChange={(e) => setEmployeeId(e.target.value)}
-                placeholder="e.g., SELA.PA.IM206 or w.rodriguez"
                 autoFocus
                 disabled={loading}
                 required
@@ -310,43 +310,38 @@ export default function ConsumerLogin({ onLoginSuccess }) {
             </button>
           </form>
         ) : step === 'totp-verify' ? (
-          <form onSubmit={handleSubmitTOTP}>
-            <div className="form-group">
-              <label>Google Authenticator Code</label>
-              <p className="email-hint">Enter the 6-digit code from your authenticator app</p>
-              <input
-                type="text"
-                value={totpCode}
-                onChange={(e) => setTotpCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
-                placeholder="000000"
-                maxLength="6"
-                autoFocus
-                disabled={loading}
-                required
-              />
-            </div>
-            <div className="form-group checkbox">
-              <input
-                type="checkbox"
-                id="remember-device"
-                checked={rememberDevice}
-                onChange={(e) => setRememberDevice(e.target.checked)}
-                disabled={loading}
-              />
-              <label htmlFor="remember-device">Remember this device for 30 days</label>
-            </div>
-            <button type="submit" disabled={loading} className="btn-primary">
-              {loading ? '⏳ Verifying...' : '✅ Verify Code'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setStep('backup-code')}
-              className="btn-secondary"
-              disabled={loading}
-            >
-              Use Backup Code
-            </button>
-          </form>
+         <form onSubmit={handleSubmitTOTP}>
+           <div className="form-group">
+             <label>Google Authenticator Code</label>
+             <p className="email-hint">Enter the 6-digit code from your authenticator app</p>
+             <OTPInput 
+               value={totpCode}
+               onChange={setTotpCode}
+               length={6}
+             />
+           </div>
+           <div className="form-group checkbox">
+             <input
+               type="checkbox"
+               id="remember-device"
+               checked={rememberDevice}
+               onChange={(e) => setRememberDevice(e.target.checked)}
+               disabled={loading}
+             />
+             <label htmlFor="remember-device">Remember this device for 30 days</label>
+           </div>
+           <button type="submit" disabled={loading} className="btn-primary">
+             {loading ? '⏳ Verifying...' : '✅ Verify Code'}
+           </button>
+           <button
+             type="button"
+             onClick={() => setStep('backup-code')}
+             className="btn-secondary"
+             disabled={loading}
+           >
+             Use Backup Code
+           </button>
+         </form>
         ) : (
           <form onSubmit={handleSubmitBackupCode}>
             <div className="form-group">

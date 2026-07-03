@@ -12,6 +12,7 @@ import {
   useBackupCode
 } from '../services/authService';
 import TOTPSetup from './TOTPSetup';
+import OTPInput from './OTPInput';
 import './Login.css';
 
 export default function AdminLogin({ onLoginSuccess }) {
@@ -180,7 +181,6 @@ export default function AdminLogin({ onLoginSuccess }) {
                 type="text"
                 value={adminId}
                 onChange={(e) => setAdminId(e.target.value.toLowerCase())}
-                placeholder="e.g., w.rodriguez or sela.pa.admin001"
                 autoFocus
                 disabled={loading}
                 required
@@ -191,28 +191,23 @@ export default function AdminLogin({ onLoginSuccess }) {
             </button>
           </form>
         ) : step === 'totp-verify' ? (
-          <form onSubmit={handleSubmitTOTP}>
-            <div className="form-group">
-              <label>Google Authenticator Code</label>
-              <p className="email-hint">Enter the 6-digit code from your authenticator app</p>
-              <input
-                type="text"
-                value={totpCode}
-                onChange={(e) => setTotpCode(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
-                placeholder="000000"
-                maxLength="6"
-                autoFocus
-                disabled={loading}
-                required
-              />
-            </div>
-            <button type="submit" disabled={loading} className="btn-primary">
-              {loading ? '⏳ Verifying...' : '✅ Verify Code'}
-            </button>
-            <button
-              type="button"
-              onClick={() => setStep('backup-code')}
-              className="btn-secondary"
+         <form onSubmit={handleSubmitTOTP}>
+           <div className="form-group">
+             <label>Google Authenticator Code</label>
+             <p className="email-hint">Enter the 6-digit code from your authenticator app</p>
+             <OTPInput 
+               value={totpCode}
+               onChange={setTotpCode}
+               length={6}
+             />
+           </div>
+           <button type="submit" disabled={loading} className="btn-primary">
+             {loading ? '⏳ Verifying...' : '✅ Verify Code'}
+           </button>
+           <button
+             type="button"
+             onClick={() => setStep('backup-code')}
+             className="btn-secondary"
               disabled={loading}
             >
               Use Backup Code

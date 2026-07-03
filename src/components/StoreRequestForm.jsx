@@ -225,6 +225,12 @@ export default function StoreRequestForm({ onNavigate }) {
   if (showSuccess) {
     return (
       <div className="store-request-container">
+        {/* Header - Same as Store Mapper */}
+        <header className="header">
+          <h1>REQUEST A STORE</h1>
+          <p>Help us discover new stores</p>
+        </header>
+
         <div className="form-wrapper success-wrapper">
           <div className="success-screen">
             <div className="success-icon">✅</div>
@@ -248,6 +254,12 @@ export default function StoreRequestForm({ onNavigate }) {
 
   return (
     <div className="store-request-container">
+      {/* Header - Same as Store Mapper */}
+      <header className="header">
+        <h1>REQUEST A STORE</h1>
+        <p>Help us discover new stores</p>
+      </header>
+
       <div className="form-wrapper">
         <h2>📍 Request a New Store</h2>
         <p className="form-subtitle">Help us discover new stores in your area</p>
