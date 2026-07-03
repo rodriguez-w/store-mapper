@@ -38,7 +38,7 @@ export default function ConsumerManager() {
   const fetchConsumers = async () => {
     try {
       const { data, error } = await supabase
-        .from('consumers')
+        .from('employees')
         .select('*')
         .order('created_at', { ascending: false });
 
@@ -105,7 +105,7 @@ export default function ConsumerManager() {
 
       // Check if email already exists
       const { data: existing } = await supabase
-        .from('consumers')
+        .from('employees')
         .select('id')
         .eq('email', formData.email.trim())
         .single();
@@ -134,7 +134,7 @@ export default function ConsumerManager() {
       };
 
       const { error: insertError } = await supabase
-        .from('consumers')
+        .from('employees')
         .insert([newConsumer]);
 
       if (insertError) throw insertError;
@@ -170,7 +170,7 @@ export default function ConsumerManager() {
       tokenExpiry.setDate(tokenExpiry.getDate() + 7);
 
       const { error: updateError } = await supabase
-        .from('consumers')
+        .from('employees')
         .update({
           registration_token: registrationToken,
           token_expiry: tokenExpiry.toISOString(),
@@ -250,7 +250,7 @@ export default function ConsumerManager() {
 
       // Check for duplicates with existing consumers
       const { data: existing } = await supabase
-        .from('consumers')
+        .from('employees')
         .select('email')
         .in('email', newConsumers.map(c => c.email));
 
@@ -261,7 +261,7 @@ export default function ConsumerManager() {
 
       // Insert consumers
       const { error: insertError } = await supabase
-        .from('consumers')
+        .from('employees')
         .insert(newConsumers);
 
       if (insertError) throw insertError;
@@ -304,7 +304,7 @@ export default function ConsumerManager() {
 
     try {
       const { error: updateError } = await supabase
-        .from('consumers')
+        .from('employees')
         .update({ status: newStatus })
         .eq('id', consumer.id);
 
@@ -330,7 +330,7 @@ export default function ConsumerManager() {
     setLoading(true);
     try {
       const { error: deleteError } = await supabase
-        .from('consumers')
+        .from('employees')
         .delete()
         .eq('id', id);
 
