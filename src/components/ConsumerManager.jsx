@@ -121,7 +121,6 @@ export default function ConsumerManager() {
 
       // Create new consumer
       const newConsumer = {
-        id: `con_${Date.now()}_${Math.random().toString(36).substring(7)}`,
         email: formData.email.trim(),
         name: formData.name.trim() || formData.email.trim().split('@')[0],
         country: formData.country,
@@ -130,7 +129,6 @@ export default function ConsumerManager() {
         token_expiry: tokenExpiry.toISOString(),
         registration_status: 'invited',
         status: 'active',
-        created_at: new Date().toISOString(),
       };
 
       const { error: insertError } = await supabase
@@ -231,7 +229,6 @@ export default function ConsumerManager() {
         tokenExpiry.setDate(tokenExpiry.getDate() + 7);
 
         return {
-          id: `con_${Date.now()}_${Math.random().toString(36).substring(7)}`,
           email: parts[0] || '',
           name: parts[1] || parts[0]?.split('@')[0] || '',
           country: parts[2] || 'PA',
@@ -240,7 +237,6 @@ export default function ConsumerManager() {
           token_expiry: tokenExpiry.toISOString(),
           registration_status: 'invited',
           status: 'active',
-          created_at: new Date().toISOString(),
         };
       }).filter(con => con.email && con.employee_id);
 
