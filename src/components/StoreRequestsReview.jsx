@@ -252,8 +252,8 @@ export default function StoreRequestsReview() {
             <h4>Request Details</h4>
 
             {/* Map */}
-            <div className="map-container">
-              <div id={`map_${selectedRequest.id}`} className="mini-map"></div>
+            <div className="request-map-container">
+              <div id={`map_${selectedRequest.id}`} className="request-mini-map"></div>
             </div>
 
             {/* Store Info */}

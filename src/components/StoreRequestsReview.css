@@ -182,19 +182,19 @@
   border: 1px solid #eee;
   border-radius: 6px;
   padding: 1rem;
-  max-height: 600px;
   overflow-y: auto;
 }
 
-.map-container {
-  margin-bottom: 1rem;
+.request-map-container {
+  margin-bottom: 0.75rem;
   border: 1px solid #eee;
   border-radius: 4px;
   overflow: hidden;
+  height: auto;
 }
 
-.mini-map {
-  height: 250px;
+.request-mini-map {
+  height: 200px;
   width: 100%;
 }
 
