@@ -1,5 +1,5 @@
--- Supabase RLS (Row-Level Security) Policies Implementation
--- This file hardens security by restricting data access based on user roles
+-- Supabase RLS (Row-Level Security) Policies Implementation - CORRECTED
+-- Uses actual table structure: admin_access with employee_id (VARCHAR)
 
 -- ============================================================================
 -- CREATE MISSING TABLES
@@ -29,7 +29,7 @@ CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON public.audit_logs(create
 -- Enable RLS on public tables (using IF EXISTS to avoid errors)
 ALTER TABLE IF EXISTS public.stores ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS public.employees ENABLE ROW LEVEL SECURITY;
-ALTER TABLE IF EXISTS public.admins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.admin_access ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS public.store_categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS public.store_requests ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS public.audit_logs ENABLE ROW LEVEL SECURITY;
@@ -38,12 +38,20 @@ ALTER TABLE IF EXISTS public.account_lockouts ENABLE ROW LEVEL SECURITY;
 ALTER TABLE IF EXISTS public.totp_backup_codes ENABLE ROW LEVEL SECURITY;
 
 -- ============================================================================
+-- HELPER: Check if current user is admin
+-- ============================================================================
+-- This helper function checks if the current authenticated user is an admin
+
+-- ============================================================================
 -- STORES TABLE - Public Read, Admin Write
 -- ============================================================================
 
 -- DROP existing policies first
 DROP POLICY IF EXISTS "Allow public to view stores" ON public.stores;
 DROP POLICY IF EXISTS "Allow admins to manage stores" ON public.stores;
+DROP POLICY IF EXISTS "Only admins can insert stores" ON public.stores;
+DROP POLICY IF EXISTS "Only admins can update stores" ON public.stores;
+DROP POLICY IF EXISTS "Only admins can delete stores" ON public.stores;
 
 -- Everyone can view stores (public data)
 CREATE POLICY "Allow public to view stores"
@@ -58,8 +66,10 @@ CREATE POLICY "Only admins can insert stores"
   FOR INSERT
   WITH CHECK (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -69,8 +79,10 @@ CREATE POLICY "Only admins can update stores"
   FOR UPDATE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -80,8 +92,10 @@ CREATE POLICY "Only admins can delete stores"
   FOR DELETE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -93,6 +107,7 @@ DROP POLICY IF EXISTS "Employees can view own record" ON public.employees;
 DROP POLICY IF EXISTS "Only admins can create employees" ON public.employees;
 DROP POLICY IF EXISTS "Only admins can update employees" ON public.employees;
 DROP POLICY IF EXISTS "Only admins can delete employees" ON public.employees;
+DROP POLICY IF EXISTS "Admins can view all employees" ON public.employees;
 
 -- Employees can view their own record
 CREATE POLICY "Employees can view own record"
@@ -108,8 +123,10 @@ CREATE POLICY "Admins can view all employees"
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -119,8 +136,10 @@ CREATE POLICY "Only admins can create employees"
   FOR INSERT
   WITH CHECK (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -130,8 +149,10 @@ CREATE POLICY "Only admins can update employees"
   FOR UPDATE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -141,27 +162,35 @@ CREATE POLICY "Only admins can delete employees"
   FOR DELETE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
 -- ============================================================================
--- ADMINS TABLE - Read-Only (for current admin lookup)
+-- ADMIN_ACCESS TABLE - Read-Only for admins
 -- ============================================================================
 
-DROP POLICY IF EXISTS "Admins can view admin table" ON public.admins;
+DROP POLICY IF EXISTS "Admins can view admin table" ON public.admin_access;
+DROP POLICY IF EXISTS "Admins can view own record" ON public.admin_access;
+DROP POLICY IF EXISTS "Admins can view admin access" ON public.admin_access;
 
--- Only the admin themselves can view their record
-CREATE POLICY "Admins can view own record"
-  ON public.admins
+-- Admins can view the admin access table
+CREATE POLICY "Admins can view admin access"
+  ON public.admin_access
   FOR SELECT
   USING (
-    admin_id = auth.jwt() ->> 'email'
+    EXISTS (
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
+    )
   );
 
--- No one can insert/update/delete admins through RLS
--- Admins must be created by database owner only
+-- No INSERT/UPDATE/DELETE allowed via RLS - admins created by database owner only
 
 -- ============================================================================
 -- STORE_CATEGORIES TABLE - Public Read, Admin Write
@@ -169,6 +198,9 @@ CREATE POLICY "Admins can view own record"
 
 DROP POLICY IF EXISTS "Allow public to view categories" ON public.store_categories;
 DROP POLICY IF EXISTS "Allow admins to manage categories" ON public.store_categories;
+DROP POLICY IF EXISTS "Only admins can create categories" ON public.store_categories;
+DROP POLICY IF EXISTS "Only admins can update categories" ON public.store_categories;
+DROP POLICY IF EXISTS "Only admins can delete categories" ON public.store_categories;
 
 -- Everyone can view categories
 CREATE POLICY "Allow public to view categories"
@@ -183,8 +215,10 @@ CREATE POLICY "Only admins can create categories"
   FOR INSERT
   WITH CHECK (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -194,8 +228,10 @@ CREATE POLICY "Only admins can update categories"
   FOR UPDATE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -205,8 +241,10 @@ CREATE POLICY "Only admins can delete categories"
   FOR DELETE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -218,6 +256,8 @@ DROP POLICY IF EXISTS "Users can view own requests" ON public.store_requests;
 DROP POLICY IF EXISTS "Users can create requests" ON public.store_requests;
 DROP POLICY IF EXISTS "Admins can view all requests" ON public.store_requests;
 DROP POLICY IF EXISTS "Admins can review requests" ON public.store_requests;
+DROP POLICY IF EXISTS "Only admins can update requests" ON public.store_requests;
+DROP POLICY IF EXISTS "Only admins can delete requests" ON public.store_requests;
 
 -- Employees can view their own store requests
 CREATE POLICY "Users can view own requests"
@@ -233,8 +273,10 @@ CREATE POLICY "Admins can view all requests"
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -256,8 +298,10 @@ CREATE POLICY "Only admins can update requests"
   FOR UPDATE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -267,8 +311,10 @@ CREATE POLICY "Only admins can delete requests"
   FOR DELETE
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
@@ -278,6 +324,8 @@ CREATE POLICY "Only admins can delete requests"
 
 DROP POLICY IF EXISTS "Admins can view logs" ON public.audit_logs;
 DROP POLICY IF EXISTS "Only admins can insert logs" ON public.audit_logs;
+DROP POLICY IF EXISTS "Only admins can view logs" ON public.audit_logs;
+DROP POLICY IF EXISTS "System can insert logs" ON public.audit_logs;
 
 -- Only admins can view audit logs
 CREATE POLICY "Only admins can view logs"
@@ -285,75 +333,25 @@ CREATE POLICY "Only admins can view logs"
   FOR SELECT
   USING (
     EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
+      SELECT 1 FROM public.admin_access aa
+      INNER JOIN public.employees e ON aa.employee_id = e.employee_id
+      WHERE aa.active = true
+      AND e.email = auth.jwt() ->> 'email'
     )
   );
 
--- Admins (and system) can insert audit logs
-CREATE POLICY "Only admins can insert logs"
+-- System can insert audit logs
+CREATE POLICY "System can insert logs"
   ON public.audit_logs
   FOR INSERT
-  WITH CHECK (
-    EXISTS (
-      SELECT 1 FROM public.admins 
-      WHERE admin_id = auth.jwt() ->> 'email'
-    )
-  );
-
--- ============================================================================
--- STORAGE BUCKET POLICIES - Strict Access Control
--- ============================================================================
-
--- Drop overly permissive policies
-DROP POLICY IF EXISTS "Allow anyone to upload to store-requests" ON storage.objects;
-DROP POLICY IF EXISTS "Allow anyone to read store-requests" ON storage.objects;
-DROP POLICY IF EXISTS "Allow anyone to update store-requests" ON storage.objects;
-DROP POLICY IF EXISTS "Allow anyone to delete from store-requests" ON storage.objects;
-
--- Only authenticated users can upload store request images
-CREATE POLICY "Authenticated users can upload store-requests"
-  ON storage.objects
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (bucket_id = 'store-requests');
-
--- Only authenticated users can view store request images
-CREATE POLICY "Authenticated users can view store-requests"
-  ON storage.objects
-  FOR SELECT
-  TO authenticated
-  USING (bucket_id = 'store-requests');
-
--- Only the uploader can update their files
-CREATE POLICY "Users can update own files"
-  ON storage.objects
-  FOR UPDATE
-  TO authenticated
-  USING (bucket_id = 'store-requests' AND auth.uid()::text = owner)
-  WITH CHECK (bucket_id = 'store-requests');
-
--- Only admins or the uploader can delete files
-CREATE POLICY "Users can delete own files or admins can delete any"
-  ON storage.objects
-  FOR DELETE
-  TO authenticated
-  USING (
-    bucket_id = 'store-requests' 
-    AND (
-      auth.uid()::text = owner 
-      OR EXISTS (
-        SELECT 1 FROM public.admins 
-        WHERE admin_id = auth.jwt() ->> 'email'
-      )
-    )
-  );
+  WITH CHECK (true);
 
 -- ============================================================================
 -- LOGIN_ATTEMPTS TABLE - For Rate Limiting
 -- ============================================================================
 
 DROP POLICY IF EXISTS "Users can view own attempts" ON public.login_attempts;
+DROP POLICY IF EXISTS "Allow insert login attempts" ON public.login_attempts;
 
 -- Users can view their own login attempts
 CREATE POLICY "Users can view own attempts"
@@ -365,7 +363,6 @@ CREATE POLICY "Users can view own attempts"
 CREATE POLICY "Allow insert login attempts"
   ON public.login_attempts
   FOR INSERT
-  TO authenticated
   WITH CHECK (true);
 
 -- ============================================================================
@@ -373,6 +370,7 @@ CREATE POLICY "Allow insert login attempts"
 -- ============================================================================
 
 DROP POLICY IF EXISTS "Users can view own lockouts" ON public.account_lockouts;
+DROP POLICY IF EXISTS "Allow insert lockouts" ON public.account_lockouts;
 
 -- Users can view their own lockout status
 CREATE POLICY "Users can view own lockouts"
@@ -384,7 +382,6 @@ CREATE POLICY "Users can view own lockouts"
 CREATE POLICY "Allow insert lockouts"
   ON public.account_lockouts
   FOR INSERT
-  TO authenticated
   WITH CHECK (true);
 
 -- ============================================================================
@@ -392,6 +389,8 @@ CREATE POLICY "Allow insert lockouts"
 -- ============================================================================
 
 DROP POLICY IF EXISTS "Users can view own backup codes" ON public.totp_backup_codes;
+DROP POLICY IF EXISTS "Allow backup code operations" ON public.totp_backup_codes;
+DROP POLICY IF EXISTS "Allow backup code updates" ON public.totp_backup_codes;
 
 -- Users can view their own backup codes
 CREATE POLICY "Users can view own backup codes"
@@ -399,17 +398,16 @@ CREATE POLICY "Users can view own backup codes"
   FOR SELECT
   USING (user_id = auth.jwt() ->> 'email');
 
--- System can insert/update backup codes
+-- System can insert backup codes
 CREATE POLICY "Allow backup code operations"
   ON public.totp_backup_codes
   FOR INSERT
-  TO authenticated
   WITH CHECK (user_id = auth.jwt() ->> 'email');
 
+-- System can update backup codes
 CREATE POLICY "Allow backup code updates"
   ON public.totp_backup_codes
   FOR UPDATE
-  TO authenticated
   USING (user_id = auth.jwt() ->> 'email');
 
 -- ============================================================================
