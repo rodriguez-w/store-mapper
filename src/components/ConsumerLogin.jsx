@@ -3,6 +3,8 @@ import {
   getTOTPSecret, 
   verifyTOTP, 
   getEmployee, 
+  getAdmin,
+  isAdmin,
   createSession,
   recordLoginAttempt,
   checkAccountLockout,
@@ -108,12 +110,19 @@ export default function ConsumerLogin({ onLoginSuccess }) {
         lookupId = lowercaseId;
       }
       
-      // If still not found as employee, try as admin (lowercase for admins)
+      // If still not found as employee, try as admin (try both cases)
       if (!user) {
-        const { getAdmin, isAdmin: checkIsAdmin } = await import('../services/authService');
-        const isAdminUser = await checkIsAdmin(lowercaseId);
-        if (isAdminUser) {
-          user = await getAdmin(lowercaseId);
+        user = await getAdmin(uppercaseId);
+        if (user) {
+          userType = 'admin';
+          lookupId = uppercaseId;
+        }
+      }
+      
+      // If still not found as admin with uppercase, try lowercase
+      if (!user) {
+        user = await getAdmin(lowercaseId);
+        if (user) {
           userType = 'admin';
           lookupId = lowercaseId;
         }
