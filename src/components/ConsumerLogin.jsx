@@ -302,7 +302,7 @@ export default function ConsumerLogin({ onLoginSuccess }) {
   }
 
   return (
-    <div className="login-container">
+    <div className="login-container admin">
       <div className="login-box">
         <h1>📍 Store Mapper</h1>
         <p>Employee Login</p>
