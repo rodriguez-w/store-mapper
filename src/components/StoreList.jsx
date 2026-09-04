@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createClient } from '@supabase/supabase-js';
+import { getSession, logAuditTrail } from '../services/authService';
 import './StoreList.css';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
@@ -61,14 +62,27 @@ export default function StoreList({ stores, loading, error, onStoresUpdate }) {
 
     try {
       const newStatus = store.status === 'open' ? 'closed' : 'open';
+      const session = getSession();
 
-      // Update store status in database
-      const { error: updateError } = await supabase
-        .from('stores')
-        .update({ status: newStatus })
-        .eq('id', store.id);
+      if (!session) {
+        throw new Error('You must be logged in to update store status');
+      }
 
-      if (updateError) throw updateError;
+      // Call the RPC function with employee context
+      const { data, error } = await supabase.rpc('update_store_status', {
+        p_store_id: store.id,
+        p_new_status: newStatus,
+        p_employee_id: session.employeeId
+      });
+
+      if (error) {
+        console.error('RPC error:', error);
+        throw error;
+      }
+
+      if (data && !data[0].success) {
+        throw new Error(data[0].message || 'Failed to update store status');
+      }
 
       // Trigger parent component to refresh stores if callback provided
       if (onStoresUpdate) {
