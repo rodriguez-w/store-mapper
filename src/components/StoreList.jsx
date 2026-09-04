@@ -80,8 +80,8 @@ export default function StoreList({ stores, loading, error, onStoresUpdate }) {
         throw error;
       }
 
-      if (data && !data[0].success) {
-        throw new Error(data[0].message || 'Failed to update store status');
+      if (data && !data.success) {
+        throw new Error(data.message || 'Failed to update store status');
       }
 
       // Trigger parent component to refresh stores if callback provided
