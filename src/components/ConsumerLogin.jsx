@@ -97,12 +97,18 @@ export default function ConsumerLogin({ onLoginSuccess }) {
         if (err.message.includes('locked')) throw err;
       }
 
-      // Try to find as employee first (uppercase for employees)
+      // Try to find as employee - try both cases
       let user = await getEmployee(uppercaseId);
       let userType = 'employee';
       let lookupId = uppercaseId;
       
-      // If not found as employee, try as admin (lowercase for admins)
+      // If not found with uppercase, try lowercase
+      if (!user) {
+        user = await getEmployee(lowercaseId);
+        lookupId = lowercaseId;
+      }
+      
+      // If still not found as employee, try as admin (lowercase for admins)
       if (!user) {
         const { getAdmin, isAdmin: checkIsAdmin } = await import('../services/authService');
         const isAdminUser = await checkIsAdmin(lowercaseId);
