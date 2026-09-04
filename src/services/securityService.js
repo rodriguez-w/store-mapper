@@ -58,10 +58,11 @@ export const validateName = (name) => {
 
 /**
  * Validates employee ID format
+ * Allows: letters, numbers, hyphens, underscores, and dots
  */
 export const validateEmployeeId = (employeeId) => {
   if (!employeeId || employeeId.length < 1 || employeeId.length > 100) return false;
-  return /^[a-zA-Z0-9\-_]+$/.test(employeeId);
+  return /^[a-zA-Z0-9\-_.]+$/.test(employeeId);
 };
 
 /**
