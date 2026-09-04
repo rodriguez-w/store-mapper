@@ -2,16 +2,40 @@
 -- This file hardens security by restricting data access based on user roles
 
 -- ============================================================================
+-- CREATE MISSING TABLES
+-- ============================================================================
+
+-- Create audit_logs table if it doesn't exist
+CREATE TABLE IF NOT EXISTS public.audit_logs (
+  id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+  user_email VARCHAR(255),
+  action VARCHAR(255),
+  resource_type VARCHAR(100),
+  resource_id BIGINT,
+  details JSONB,
+  ip_address INET,
+  user_agent TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Create indexes for performance
+CREATE INDEX IF NOT EXISTS idx_audit_logs_user ON public.audit_logs(user_email);
+CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON public.audit_logs(created_at DESC);
+
+-- ============================================================================
 -- ENABLE RLS ON ALL TABLES
 -- ============================================================================
 
--- Enable RLS on public tables
-ALTER TABLE public.stores ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.employees ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.admins ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.store_categories ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.store_requests ENABLE ROW LEVEL SECURITY;
-ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+-- Enable RLS on public tables (using IF EXISTS to avoid errors)
+ALTER TABLE IF EXISTS public.stores ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.employees ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.admins ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.store_categories ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.store_requests ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.audit_logs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.login_attempts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.account_lockouts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE IF EXISTS public.totp_backup_codes ENABLE ROW LEVEL SECURITY;
 
 -- ============================================================================
 -- STORES TABLE - Public Read, Admin Write
