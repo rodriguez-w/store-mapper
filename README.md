@@ -103,6 +103,24 @@ VITE_SUPABASE_URL=https://xxxxx.supabase.co
 VITE_SUPABASE_ANON_KEY=eyJhbGc...
 ```
 
+`VITE_SUPABASE_ANON_KEY` is the browser-safe Supabase anon/publishable key,
+not the Supabase service-role key. It is intentionally included in the
+frontend and must be protected with Supabase Row Level Security policies.
+
+Do not use the placeholder value `https://your-project.supabase.co`. Replace
+it with the real URL from Supabase **Settings → API**, such as
+`https://your-project-id.supabase.co`.
+
+For Vercel, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` under the
+appropriate environment (usually **Production**) with visibility set to
+**Config**, not **Secret**. Vercel does not allow variables with the public
+`VITE_` prefix to be marked Secret. The type cannot be changed after a
+variable is created: delete the existing variable, recreate it as **Config**,
+and then redeploy. Vite injects environment variables during the build.
+
+Never put a Resend API secret in a `VITE_` variable. Configure
+`RESEND_API_KEY` as a server-side Supabase Edge Function secret.
+
 ### Step 6: Run Development Server
 ```bash
 npm run dev

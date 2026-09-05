@@ -13,7 +13,7 @@
 3. Wait for setup (~1 min)
 4. Settings → Database → Copy these URLs:
    - `VITE_SUPABASE_URL` (like `https://xxxxx.supabase.co`)
-   - `VITE_SUPABASE_ANON_KEY` (long string starting with `eyJ`)
+   - `VITE_SUPABASE_ANON_KEY` (anon/publishable key; it may start with `eyJ` or `sb_`)
 
 ### Step 3: Setup Database (1 min)
 In Supabase, go to **SQL Editor** → Click **New Query** → Paste:
@@ -41,6 +41,12 @@ Click **Run** ✓
 In the `store-mapper` folder:
 1. Rename `.env.example` → `.env.local`
 2. Paste your Supabase credentials
+
+When deploying on Vercel, create `VITE_SUPABASE_URL` and
+`VITE_SUPABASE_ANON_KEY` as **Config** variables, not **Secret** variables.
+`VITE_*` values are bundled into the browser app by Vite. Redeploy after
+editing them. If one was already created as **Secret**, delete it and
+recreate it as **Config**; Vercel does not allow changing the type afterward.
 
 ### Step 5: Start It Up (30 seconds)
 ```bash
