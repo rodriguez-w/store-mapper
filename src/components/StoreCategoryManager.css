@@ -48,8 +48,8 @@
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 .form-group textarea {
@@ -251,7 +251,7 @@
 
 .btn-toggle-bulk {
   padding: 0.75rem 1.5rem;
-  background: #667eea;
+  background: var(--color-primary);
   color: white;
   border: none;
   border-radius: 4px;
@@ -262,14 +262,14 @@
 }
 
 .btn-toggle-bulk:hover {
-  background: #5568d3;
+  background: var(--color-primary-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(23, 59, 166, 0.3);
 }
 
 .bulk-add-section {
   background: #f5f7ff;
-  border: 2px solid #667eea;
+  border: 2px solid var(--color-primary);
   border-radius: 6px;
   padding: 1.5rem;
   margin-bottom: 1.5rem;
@@ -288,7 +288,7 @@
   background: white;
   padding: 0.75rem;
   border-radius: 4px;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid var(--color-primary);
 }
 
 .bulk-add-section textarea {
@@ -304,8 +304,8 @@
 
 .bulk-add-section textarea:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 .bulk-add-section textarea:disabled {

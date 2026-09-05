@@ -221,11 +221,11 @@ function AdminPanel() {
   if (!isLoggedIn) {
     return (
       <div className="admin-login">
-        <div className="login-box">
+        <div className="admin-access-box">
           <h1>🔐 Admin Access</h1>
           <p>Please log in using the admin login page.</p>
           <a href="/admin/login" style={{ textDecoration: 'none' }}>
-            <button style={{ width: '100%', padding: '10px' }}>Go to Login</button>
+            <button className="btn-primary">Go to Login</button>
           </a>
         </div>
       </div>

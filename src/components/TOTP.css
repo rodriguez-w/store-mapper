@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   padding: 20px;
 }
 
@@ -31,7 +31,7 @@
 
 .step-number {
   background: #f0f0f0;
-  color: #667eea;
+  color: var(--color-primary);
   padding: 8px 12px;
   border-radius: 4px;
   font-size: 12px;
@@ -85,7 +85,7 @@
   margin-top: 8px;
   font-family: 'Courier New', monospace;
   font-size: 14px;
-  color: #667eea;
+  color: var(--color-primary);
   letter-spacing: 2px;
   text-align: center;
   word-break: break-all;
@@ -107,8 +107,8 @@
 
 .totp-input:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 .totp-input:disabled {
@@ -135,13 +135,13 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
   color: white;
 }
 
 .btn-primary:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 20px rgba(23, 59, 166, 0.3);
 }
 
 .btn-primary:disabled {

@@ -3,54 +3,50 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(180deg, #173BA6 0%, #091140 100%);
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
 }
 
-.login-box {
-  background: white;
+.admin-access-box {
+  background: var(--color-background);
   padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 400px;
   text-align: center;
+  border: 1px solid var(--color-border);
 }
 
-.login-box h1 {
-  margin-bottom: 30px;
-  color: #333;
+.admin-access-box h1 {
+  margin: 0 0 12px 0;
+  color: var(--color-text);
+  font-size: 28px;
+  font-weight: 700;
 }
 
-.login-box input {
+.admin-access-box p {
+  margin: 0 0 24px 0;
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+.admin-access-box .btn-primary {
   width: 100%;
   padding: 12px;
-  margin-bottom: 20px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-  box-sizing: border-box;
-}
-
-.login-box input:focus {
-  outline: none;
-  border-color: #667eea;
-}
-
-.login-box button {
-  width: 100%;
-  padding: 12px;
-  background: #667eea;
-  color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.3s;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  box-shadow: var(--shadow-md);
 }
 
-.login-box button:hover {
-  background: #5568d3;
+.admin-access-box .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
 }
 
 .message {
@@ -145,8 +141,8 @@
 }
 
 .admin-tabs .tab.active {
-  color: #667eea;
-  border-bottom-color: #667eea;
+  color: var(--color-primary);
+  border-bottom-color: var(--color-primary);
 }
 
 .admin-tabs .tab:hover {
@@ -215,7 +211,7 @@
 }
 
 .audit-table table thead {
-  background: #667eea;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -246,7 +242,7 @@
 }
 
 .employees-table table thead {
-  background: #667eea;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -296,7 +292,7 @@
 
 .status-select:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--color-primary);
   background-color: #f9f9f9;
 }
 
@@ -322,7 +318,7 @@
   background: #f9f9f9;
   padding: 10px;
   border-radius: 3px;
-  border-left: 3px solid #667eea;
+  border-left: 3px solid var(--color-primary);
 }
 
 textarea {
@@ -338,7 +334,7 @@ textarea {
 
 textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--color-primary);
 }
 
 .preview {
@@ -364,7 +360,7 @@ textarea:focus {
 }
 
 .preview table thead {
-  background: #667eea;
+  background: var(--color-primary);
   color: white;
 }
 
@@ -424,7 +420,7 @@ textarea:focus {
 }
 
 .stores-table table thead {
-  background: #667eea;
+  background: var(--color-primary);
   color: white;
 }
 

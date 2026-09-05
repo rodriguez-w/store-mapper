@@ -116,8 +116,8 @@
 .form-group textarea:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(23, 59, 166, 0.1);
 }
 
 .form-actions {
@@ -386,7 +386,7 @@
 .registration-link-input {
   flex: 1;
   padding: 0.75rem;
-  border: 2px solid #667eea;
+  border: 2px solid var(--color-primary);
   border-radius: 4px;
   font-family: 'Courier New', monospace;
   font-size: 0.9rem;
