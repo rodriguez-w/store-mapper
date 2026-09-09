@@ -292,20 +292,26 @@ input:focus, textarea:focus, select:focus {
     width: 100vw;
     height: calc(100vh - 43px);
     height: calc(100dvh - 43px);
+    display: flex;
+    flex-direction: column;
   }
 
   .container {
     flex-direction: column;
+    display: flex;
+    flex: 1;
+    min-height: 0;
   }
 
   .sidebar {
     width: 100%;
-    max-height: 60%;
+    flex: 0 0 70%;
     min-width: 0;
     border-bottom: 1px solid var(--color-border);
     border-right: none;
     overflow-y: auto;
     flex-shrink: 0;
+    padding: 1rem;
   }
 
   .header {
@@ -331,11 +337,11 @@ input:focus, textarea:focus, select:focus {
   }
 
   .map-container {
-    flex: 1;
+    flex: 0 0 30%;
+    width: 100%;
     min-height: 0;
-    max-height: 30%;
-    height: auto;
-    overflow: visible;
+    overflow: hidden;
+    border-top: 1px solid var(--color-border);
   }
 
   .map {
@@ -351,25 +357,35 @@ input:focus, textarea:focus, select:focus {
     width: 100vw;
     height: calc(100vh - 43px);
     height: calc(100dvh - 43px);
+    display: flex;
+    flex-direction: column;
   }
 
   .container {
     flex-direction: column;
+    display: flex;
+    flex: 1;
+    min-height: 0;
   }
 
   .header {
-    padding-left: 1rem;
+    padding: 0.75rem 1rem;
     flex-shrink: 0;
   }
 
   .sidebar {
-    padding: 1rem;
-    max-height: 62%;
+    flex: 0 0 70%;
+    padding: 0.75rem;
+    overflow-y: auto;
+    min-height: 0;
   }
 
   .map-container {
-    max-height: 30%;
+    flex: 0 0 30%;
+    width: 100%;
     min-height: 0;
+    overflow: hidden;
+    border-top: 1px solid var(--color-border);
   }
 
   .header h1 {

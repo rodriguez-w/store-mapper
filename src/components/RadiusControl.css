@@ -108,3 +108,100 @@
   border-color: transparent;
   box-shadow: var(--shadow-md);
 }
+
+/* Mobile optimization (768px and below) */
+@media (max-width: 768px) {
+  .radius-control {
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+  }
+
+  .radius-control h2 {
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    font-weight: 600;
+  }
+
+  .radius-display {
+    margin-bottom: 0.8rem;
+  }
+
+  .current-value {
+    font-size: 1.4rem;
+  }
+
+  .radius-slider {
+    margin-bottom: 0.6rem;
+    height: 6px;
+  }
+
+  .radius-slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .radius-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .presets {
+    gap: 0.4rem;
+  }
+
+  .preset-btn {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: 6px;
+  }
+}
+
+/* Extra small devices (480px and below) */
+@media (max-width: 480px) {
+  .radius-control {
+    padding: 0.65rem;
+    margin-bottom: 0.75rem;
+    border-radius: 8px;
+  }
+
+  .radius-control h2 {
+    font-size: 0.8rem;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+  }
+
+  .radius-display {
+    margin-bottom: 0.5rem;
+  }
+
+  .current-value {
+    font-size: 1.1rem;
+  }
+
+  .radius-slider {
+    margin-bottom: 0.4rem;
+    height: 5px;
+  }
+
+  .radius-slider::-webkit-slider-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  .radius-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+  }
+
+  .presets {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+  }
+
+  .preset-btn {
+    padding: 0.4rem 0.3rem;
+    font-size: 0.6rem;
+    border-radius: 5px;
+  }
+}
