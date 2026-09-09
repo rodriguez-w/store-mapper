@@ -135,13 +135,10 @@ export default function StoreList({ stores, loading, error, onStoresUpdate }) {
                     disabled={updatingStoreId === store.id}
                     title={`Click to mark as ${store.status === 'open' ? 'closed' : 'open'}`}
                     aria-label={`Toggle store status: ${store.status}`}
+                    role="switch"
+                    aria-checked={store.status === 'open'}
                   >
-                    <span className={`toggle-part open-part ${store.status === 'open' ? 'active' : ''}`}>
-                      ✓
-                    </span>
-                    <span className={`toggle-part closed-part ${store.status === 'closed' ? 'active' : ''}`}>
-                      ✕
-                    </span>
+                    <span className="toggle-knob" />
                   </button>
                 </div>
               </div>

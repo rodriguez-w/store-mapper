@@ -113,24 +113,23 @@
   min-width: 50px;
 }
 
-/* Segmented Toggle Switch */
+/* Pill Toggle Switch (green = open, red = closed) */
 .toggle-switch {
   display: flex;
-  width: 100px;
-  height: 40px;
-  border: 2px solid #E0E0E0;
-  border-radius: 10px;
-  background: #F2F2F2;
+  align-items: center;
+  width: 60px;
+  height: 32px;
+  border: none;
+  border-radius: 999px;
   cursor: pointer;
   position: relative;
-  padding: 0;
-  gap: 0;
-  overflow: hidden;
-  transition: all 0.3s ease;
+  padding: 3px;
+  transition: background-color 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .toggle-switch:hover:not(:disabled) {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .toggle-switch:disabled {
@@ -139,61 +138,23 @@
 }
 
 .toggle-switch.open {
-  border-color: #10B981;
+  background: #10B981;
+  justify-content: flex-end;
 }
 
 .toggle-switch.closed {
-  border-color: #EF4444;
-}
-
-/* Individual toggle parts */
-.toggle-part {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.2rem;
-  font-weight: bold;
-  background: #FFFFFF;
-  color: #999999;
-  transition: all 0.3s ease;
-  border-right: 1px solid #E0E0E0;
-}
-
-.toggle-part:last-child {
-  border-right: none;
-}
-
-/* Open part (checkmark) */
-.open-part {
-  color: #10B981;
-}
-
-.toggle-switch.open .open-part.active {
-  background: #10B981;
-  color: white;
-  flex: 1.2;
-}
-
-.toggle-switch.closed .open-part {
-  background: #FFFFFF;
-  color: #999999;
-}
-
-/* Closed part (X) */
-.closed-part {
-  color: #EF4444;
-}
-
-.toggle-switch.closed .closed-part.active {
   background: #EF4444;
-  color: white;
-  flex: 1.2;
+  justify-content: flex-start;
 }
 
-.toggle-switch.open .closed-part {
+/* Sliding knob */
+.toggle-knob {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   background: #FFFFFF;
-  color: #999999;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+  transition: transform 0.3s ease;
 }
 
 .loading,
@@ -243,12 +204,13 @@
   }
 
   .toggle-switch {
-    width: 90px;
-    height: 35px;
+    width: 54px;
+    height: 28px;
   }
 
-  .toggle-part {
-    font-size: 1rem;
+  .toggle-knob {
+    width: 22px;
+    height: 22px;
   }
 }
 
@@ -274,12 +236,13 @@
   }
 
   .toggle-switch {
-    width: 110px;
-    height: 45px;
+    width: 64px;
+    height: 34px;
   }
 
-  .toggle-part {
-    font-size: 1.3rem;
+  .toggle-knob {
+    width: 28px;
+    height: 28px;
   }
 }
 
@@ -309,11 +272,12 @@
   }
 
   .toggle-switch {
-    width: 100px;
-    height: 40px;
+    width: 56px;
+    height: 30px;
   }
 
-  .toggle-part {
-    font-size: 1.1rem;
+  .toggle-knob {
+    width: 24px;
+    height: 24px;
   }
 }

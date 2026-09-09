@@ -15,6 +15,13 @@ import StoreRequestForm from './components/StoreRequestForm';
 import { getSession, isLoggedIn, destroySession } from './services/authService';
 import './App.css';
 
+// Development-only routes (Page Playground).
+// `import.meta.env.DEV` is Vite's build-time flag: it is inlined to
+// `false` in production builds, so this import and everything under
+// src/dev/ becomes unreachable dead code and is stripped from the
+// production bundle by Vite/Rollup's tree-shaking.
+import { getDevRoutes } from './dev/devRoutes';
+
 // Initialize Supabase client (you'll fill in these credentials later)
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
@@ -237,6 +244,10 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin onLoginSuccess={() => window.location.href = '/admin'} />} />
           <Route path="/" element={<ProtectedRoute element={<Consumer />} requiredType="consumer" />} />
           <Route path="/admin" element={<ProtectedRoute element={<AdminPanel />} requiredType="admin" />} />
+          {/* Development-only Page Playground routes. `getDevRoutes()` returns
+              an empty array outside of dev builds, and every route it does
+              return is additionally wrapped in <DevGuard> (see src/dev/devRoutes.jsx). */}
+          {import.meta.env.DEV && getDevRoutes()}
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
