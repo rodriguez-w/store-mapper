@@ -300,7 +300,7 @@ input:focus, textarea:focus, select:focus {
 
   .sidebar {
     width: 100%;
-    max-height: 35%;
+    max-height: 60%;
     min-width: 0;
     border-bottom: 1px solid var(--color-border);
     border-right: none;
@@ -332,9 +332,10 @@ input:focus, textarea:focus, select:focus {
 
   .map-container {
     flex: 1;
-    min-height: 280px;
+    min-height: 0;
+    max-height: 30%;
     height: auto;
-    overflow: hidden;
+    overflow: visible;
   }
 
   .map {
@@ -363,7 +364,12 @@ input:focus, textarea:focus, select:focus {
 
   .sidebar {
     padding: 1rem;
-    max-height: 32%;
+    max-height: 62%;
+  }
+
+  .map-container {
+    max-height: 30%;
+    min-height: 0;
   }
 
   .header h1 {
